@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Qualifica · Il costo del dolce e il prezzo di vendita</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin:0; background:#EEF0EA; color:#262420; font-family:'Schibsted Grotesk',sans-serif; letter-spacing:-.005em; -webkit-font-smoothing:antialiased; }
+
+  /* ---- struttura delle card della lezione ---- */
+  .card { background:#F8F8F3; border:1px solid #D9DACF; border-radius:18px; padding:40px 44px 120px; margin-bottom:30px; position:relative; overflow:hidden; isolation:isolate; }
+  .card .wm { position:absolute; right:44px; bottom:34px; font-family:'Fraunces',serif; font-weight:600; font-size:60px; line-height:1; letter-spacing:1px; pointer-events:none; }
+  .kicker { display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:6px 14px; font-size:11px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; position:relative; }
+  .card h2 { font-family:'Fraunces',serif; font-weight:600; font-size:34px; line-height:1.08; letter-spacing:-.8px; margin:14px 0 18px; position:relative; }
+  .card p.t { font-size:19px; line-height:1.74; margin:0 0 18px; }
+  .card p.t:last-child { margin-bottom:0; }
+  .hl { background:linear-gradient(transparent 64%, rgba(235,200,113,.62) 64%); }
+  .boxlist { list-style:none; padding:0; margin:0 0 26px; display:grid; gap:10px; }
+  .boxlist li { background:#fff; border:1px solid #D9DACF; border-radius:12px; padding:14px 18px; font-size:17px; line-height:1.55; }
+  blockquote.def { margin:0 0 24px; background:#fff; border:1px solid #E9E7DD; border-top:3px solid #f0b783; border-radius:14px 14px 18px 18px; padding:30px 36px 22px; }
+  blockquote.def p.q { font-family:'Fraunces',serif; font-weight:500; font-style:italic; font-size:23px; line-height:1.5; margin:0 0 18px; letter-spacing:-.3px; color:#2b2823; text-align:center; }
+  blockquote.def .src { display:flex; align-items:center; justify-content:center; gap:8px; padding-top:16px; border-top:1px solid #EEECE3; color:#827F75; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+
+  /* ---- barra di navigazione ---- */
+  .navtabs button, .navdrop button { display:inline-flex; align-items:center; gap:8px; border:none; background:transparent; color:#5a5750; font-family:'Schibsted Grotesk',sans-serif; font-size:14px; font-weight:600; padding:19px 15px; cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; }
+  .navtabs button.on { color:#b34400; border-bottom-color:#E65900; }
+  .navdrop button { width:100%; text-align:left; border-radius:10px; padding:12px 14px; border-bottom:none; }
+  .navdrop button.on { background:rgba(230,89,0,.1); color:#b34400; }
+  .navtoggle { display:none; align-items:center; gap:8px; border:1px solid #D9DACF; background:#F8F8F3; color:#57534a; font-family:'Schibsted Grotesk',sans-serif; font-size:14px; font-weight:600; padding:10px 16px; border-radius:11px; cursor:pointer; margin:10px 0; }
+  .lucide { width:17px; height:17px; flex-shrink:0; }
+  .tabpanel { display:none; }
+  .tabpanel.on { display:block; }
+  .segbtn { border:none; cursor:pointer; border-radius:9px; padding:9px 15px; font-family:'Schibsted Grotesk',sans-serif; font-size:13.5px; font-weight:600; white-space:nowrap; background:transparent; color:#5a5750; }
+  .segbtn.on { background:#57534a; color:#F8F8F3; }
+
+  @media (max-width: 899px) {
+    .navtabs { display:none !important; }
+    .navtoggle { display:inline-flex !important; }
+  }
+  @media (min-width: 900px) { .navdrop { display:none !important; } }
+  @media (max-width: 700px) {
+    .card { padding:26px 22px 92px; }
+    .card h2 { font-size:27px; }
+    .card p.t { font-size:17px; }
+    .grid2 { grid-template-columns:1fr !important; }
+  }
+</style>
+
+<style>
+/* Vocabolario grafico 21/07: le mappe parlano a mano */
+svg.mappa text { font-family:'Patrick Hand','Segoe Print',cursive !important; letter-spacing:0 !important; }
+/* Le definizioni diventano shelf card (bordo spesso sinistra+sotto) */
+blockquote.def { background:#fdf1e6 !important; border:1.5px solid #E65900 !important;
+  border-left-width:7px !important; border-bottom-width:7px !important; border-radius:16px !important; }
+blockquote.def .src { border-top:1px solid #f4dcc4 !important; }
+</style>
+
+<style>
+/* 22/07: niente card bianche - le liste prendono i colori del sistema */
+.boxlist li:nth-child(4n+1){background:#eef5f0 !important;border:1px solid #5C8B73 !important;border-left:5px solid #5C8B73 !important;}
+.boxlist li:nth-child(4n+2){background:#eef3f9 !important;border:1px solid #5A82AB !important;border-left:5px solid #5A82AB !important;}
+.boxlist li:nth-child(4n+3){background:#f3f0f8 !important;border:1px solid #7B66A4 !important;border-left:5px solid #7B66A4 !important;}
+.boxlist li:nth-child(4n+4){background:#fbf1e7 !important;border:1px solid #C07F49 !important;border-left:5px solid #C07F49 !important;}
+/* numeri sempre in Fraunces, in TUTTE le grafiche (la regola "text" dentro la mappa grande vale per tutta la pagina e senza questo override vincerebbe lei) */
+svg text.num, svg tspan.num{font-family:'Fraunces',Georgia,serif !important;font-weight:600;font-variant-numeric:lining-nums !important;}
+/* infografiche aggiunte */
+.gf-archi{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin:26px 0 4px;}
+.gf-archi .arco{text-align:center;}
+.gf-archi svg{display:block;width:100%;max-width:210px;height:auto;margin:0 auto;}
+.gf-archi .num{font-family:'Fraunces',serif;font-weight:600;font-size:34px;letter-spacing:-1px;margin-top:-52px;color:#262420;}
+.gf-archi h4{font-family:'Fraunces',serif;font-weight:600;font-size:18px;margin:20px 0 4px;color:#262420;}
+.gf-archi p{font-size:13px;color:#827F75;line-height:1.5;margin:0 auto;max-width:200px;}
+@media (max-width:680px){.gf-archi{grid-template-columns:1fr;}.gf-archi .num{margin-top:-48px;}}
+.gf-tempo-scorri{overflow-x:auto;padding:4px 0;}
+.gf-tempo{position:relative;min-width:720px;height:216px;}
+.gf-tempo::before{content:"";position:absolute;left:72px;width:584px;top:108px;height:2px;background:#D9DACF;}
+.gf-tappa{position:absolute;top:80px;width:144px;text-align:center;}
+.gf-tappa .pill{width:56px;height:56px;border-radius:50%;margin:0 auto;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:22px;border:2px solid;}
+.gf-tappa .testo{position:absolute;left:0;right:0;}
+.gf-tappa.su .testo{bottom:64px;}
+.gf-tappa.giu .testo{top:64px;}
+.gf-tappa h4{font-family:'Fraunces',serif;font-weight:600;font-size:15px;margin:0 0 2px;color:#262420;}
+.gf-tappa p{font-size:11.5px;color:#827F75;margin:0;line-height:1.35;}
+.gf-scala{display:flex;align-items:flex-end;gap:16px;margin:26px 4px 0;min-height:230px;}
+.gf-scala .gradino{flex:1;border-radius:14px 14px 10px 10px;border:1.5px solid;position:relative;}
+.gf-scala .npill{position:absolute;top:10px;left:10px;width:38px;height:38px;border-radius:50%;background:#fff;border:1px solid #D9DACF;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:#262420;}
+.gf-scala-eti{display:flex;gap:16px;margin-top:10px;}
+.gf-scala-eti div{flex:1;text-align:center;}
+.gf-scala-eti h4{font-family:'Fraunces',serif;font-weight:600;font-size:15.5px;margin:0 0 2px;color:#262420;}
+.gf-scala-eti p{font-size:12px;color:#827F75;margin:0;}
+.gf-confronto{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;margin:26px 0 0;}
+.gf-pannello{border-radius:18px;padding:24px 26px;border:1.5px solid;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;}
+.gf-pannello .stack{display:flex;flex-direction:column-reverse;gap:4px;}
+.gf-pannello .stack span{width:42px;height:13px;border-radius:6px;border:1px solid;background:#fff;display:block;}
+.gf-pannello .eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:7px;}
+.gf-pannello .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;}
+.gf-pannello .numero{font-family:'Fraunces',serif;font-weight:600;font-size:50px;letter-spacing:-2px;line-height:1.05;color:#262420;margin:4px 0 6px;}
+.gf-pannello .numero small{font-size:24px;letter-spacing:0;}
+.gf-pannello p{font-size:13px;color:#5d594f;line-height:1.5;margin:0;}
+.gf-freccia{text-align:center;}
+.gf-freccia .eti{font-family:'Fraunces',serif;font-style:italic;font-size:13.5px;color:#827F75;margin-top:6px;}
+@media (max-width:760px){.gf-confronto{grid-template-columns:1fr;}.gf-freccia svg{transform:rotate(90deg);}}
+</style>
+
+<style>
+/* 23/07: shelf card estese (proposte accettate da Mauro) */
+.shelfc{background:var(--tn);border:1.5px solid var(--cp);border-left-width:7px;border-bottom-width:7px;border-radius:16px;padding:20px 24px;margin:26px 0 0;}
+.shelfc .shelfeti{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et);margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.shelfc .shelfeti::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cp);}
+.shelfc .shelfeti:has(svg)::before{display:none;}
+.shelfc p{font-size:16.5px;line-height:1.65;margin:0;color:#262420;}
+</style>
+
+<style>
+/* 23/07: video YouTube incorporato (metodo collaudato su Firefox) */
+.video-eti{display:inline-flex;align-items:center;gap:8px;color:#827F75;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;}
+.video-eti svg{width:16px;height:16px;}
+.video-anteprima{display:block;position:relative;width:100%;aspect-ratio:16/9;padding:0;border:1px solid #D9DACF;cursor:pointer;border-radius:8px;overflow:hidden;background:transparent;}
+.video-anteprima img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:7px;}
+.video-anteprima .play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:78px;height:54px;border-radius:14px;background:#E65900;display:flex;align-items:center;justify-content:center;transition:transform .15s ease;}
+.video-anteprima:hover .play{transform:translate(-50%,-50%) scale(1.06);}
+.video-anteprima .play span{width:0;height:0;border-style:solid;border-width:11px 0 11px 19px;border-color:transparent transparent transparent #fff;margin-left:4px;}
+.video-anteprima .fascia{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:8px;padding:13px 16px;background:linear-gradient(transparent, rgba(0,0,0,.74));color:#fff;font-size:13px;font-weight:600;letter-spacing:.01em;}
+.video-cornice{position:relative;width:100%;aspect-ratio:16/9;border-radius:8px;overflow:hidden;border:1px solid #D9DACF;background:transparent;}
+.video-cornice iframe{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:7px;}
+.apri-yt{display:inline-flex;align-items:center;gap:9px;margin-top:14px;background:rgba(230,89,0,.10);border:1px solid #DD977A;color:#a34613;border-radius:12px;padding:10px 16px;font-size:13px;font-weight:600;text-decoration:none;}
+.apri-yt:hover{background:rgba(230,89,0,.16);}
+.apri-yt svg{width:15px;height:15px;}
+</style>
+
+<style>
+/* 26/07: le FOTO e le ILLUSTRAZIONI (ricetta del modulo «Strumenti di pagamento») */
+.fotoriga{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:center;margin:26px 0;}
+.fotoriga.stretta{grid-template-columns:1fr 300px;}
+.fotoriga>p.t{margin:0;}
+.fotoblocco{border-radius:8px;overflow:hidden;border:1px solid #D9DACF;background:transparent;}
+.fotoblocco img{display:block;width:100%;height:auto;border-radius:7px;}
+.fotonuda img{display:block;width:100%;height:auto;}
+.fotomedia{max-width:620px;margin:26px auto;}
+.fotogrande{max-width:840px;margin:26px auto;}
+.fotoblocco img,.fotonuda img{cursor:zoom-in;}
+#velofoto{position:fixed;inset:0;background:#262420;display:none;align-items:center;justify-content:center;z-index:1200;padding:34px;}
+#velofoto.on{display:flex;}
+#velofoto img{max-width:min(1720px,95vw);max-height:91vh;width:auto;height:auto;border-radius:10px;}
+#velofoto .chiudi{position:absolute;top:16px;right:20px;width:48px;height:48px;border-radius:50%;border:none;background:rgba(248,248,243,.16);color:#F8F8F3;font-size:30px;line-height:1;cursor:pointer;font-family:'Schibsted Grotesk',sans-serif;}
+#velofoto .chiudi:hover{background:rgba(248,248,243,.30);}
+@media print{#velofoto{display:none !important;}}
+.avvolge::after{content:"";display:block;clear:both;}
+.avvolge .scatto{float:right;width:340px;margin:6px 0 20px 30px;}
+@media (max-width:700px){.avvolge .scatto{float:none;width:100%;max-width:360px;margin:0 auto 20px;}}
+@media (max-width:860px){.fotoriga{grid-template-columns:1fr !important;}.fotoriga>.fotoblocco,.fotoriga>.fotonuda{max-width:380px;margin:0 auto;}}
+</style>
+
+<style>
+/* 26/07 (ordine di Mauro): TAGLIA UNICA DELLE MAPPE. Tutte le mappe del modulo
+   rendono alla larghezza per cui sono disegnate (tela 1020), cosi' le scritte
+   sono grandi uguali dappertutto: lezione, sintesi, esercizi. Dentro non si tocca nulla. */
+svg.mappa{max-width:1020px;margin-left:auto;margin-right:auto;}
+
+/* 26/07 (ordine di Mauro): LA LENTE. Ogni mappa, grafico e infografica si puo'
+   aprire a schermo intero col + in alto a destra, e si richiude con la x. */
+.zoomabile{position:relative;}
+.zoomabile>.lente{position:absolute;top:8px;right:8px;width:36px;height:36px;border-radius:11px;
+  border:1px solid #D9DACF;background:#fff;color:#57534a;display:flex;align-items:center;
+  justify-content:center;cursor:zoom-in;padding:0;z-index:2;}
+.zoomabile>.lente:hover{background:#EEF0EA;border-color:#C9C4B8;}
+.zoomabile>.lente svg{width:19px;height:19px;display:block;}
+#velografica{position:fixed;inset:0;background:#262420;display:none;align-items:center;
+  justify-content:center;z-index:1200;padding:34px 26px;}
+#velografica.on{display:flex;}
+#velografica .telaio{background:#F8F8F3;border:1px solid #D9DACF;border-radius:16px;
+  padding:26px 30px;width:min(1560px,94vw);max-height:90vh;overflow:auto;}
+#velografica .telaio svg{display:block;width:100% !important;height:auto !important;max-width:none !important;min-width:0;}
+#velografica .chiudi{position:absolute;top:16px;right:20px;width:48px;height:48px;border-radius:50%;
+  border:none;background:rgba(248,248,243,.16);color:#F8F8F3;font-size:30px;line-height:1;
+  cursor:pointer;font-family:'Schibsted Grotesk',sans-serif;}
+#velografica .chiudi:hover{background:rgba(248,248,243,.30);}
+@media print{#velografica{display:none !important;}.zoomabile>.lente{display:none !important;}}
+@media (max-width:900px){#velografica .telaio{padding:16px 14px;}
+  #velografica .telaio svg{min-width:740px;}}
+@media (max-width:700px){.zoomabile>.lente{width:32px;height:32px;}}
+</style>
+
+<style>
+/* 24/07: RESA DA SMARTPHONE (regole ricavate dal Modulo 1 di riferimento + binario grafiche) */
+@media (max-width: 860px) {
+  .card [style*="grid-template-columns:1fr 1fr"] { grid-template-columns: 1fr !important; }
+  .card [style*="grid-template-columns: 1fr 1fr"] { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 700px) {
+  .card .wm { font-size: 44px !important; right: 18px !important; bottom: 16px !important; }
+  #p-lez h1 { font-size: 34px !important; letter-spacing: -1px !important; }
+  .shelfc { padding: 16px 18px !important; }
+  blockquote.def { padding: 22px 20px 16px !important; }
+  /* il binario: le grafiche larghe non si schiacciano, si fanno scorrere col dito */
+  .binario { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .binario > svg { min-width: 740px; }
+}
+@media (max-width: 520px) {
+  .card { padding: 22px 16px 76px !important; }
+  #p-lez h1 { font-size: 28px !important; }
+  .card h2 { font-size: 24px !important; }
+}
+</style>
+<style>
+/* Griglie a 3-4 colonne (e 2 asimmetriche) impilate sul telefono */
+@media (max-width: 720px){
+  #p-lez [style*="repeat(3,1fr)"], #p-app [style*="repeat(3,1fr)"],
+  #p-lez [style*="repeat(4,1fr)"], #p-app [style*="repeat(4,1fr)"],
+  #p-sintesi [style*="repeat(4,1fr)"]{ grid-template-columns:1fr 1fr !important; }
+  #p-lez [style*="1.1fr 1fr"], #p-lez [style*=".9fr 1.4fr"],
+  #p-app [style*=".85fr 1.15fr"], #p-app [style*="1fr 1fr"],
+  #p-sintesi [style*="grid-template-columns:1fr 1fr"]{ grid-template-columns:1fr !important; }
+}
+@media (max-width: 520px){
+  #p-lez [style*="repeat(3,1fr)"], #p-app [style*="repeat(3,1fr)"],
+  #p-lez [style*="repeat(4,1fr)"], #p-app [style*="repeat(4,1fr)"],
+  #p-sintesi [style*="repeat(4,1fr)"]{ grid-template-columns:1fr !important; }
+}
+</style>
+
+<style>
+/* ===================================================================== */
+/*  IMPIANTO NUOVO 25/07/2026                                          */
+/*  Carattere 21 e colonna del testo 880 centrata. La card NON cambia    */
+/*  larghezza: si stringe solo il testo. Il trucco e' il padding largo,  */
+/*  e chi deve restare larga esce col margine negativo.                  */
+/* ===================================================================== */
+:root{ --corpo:21px; --sfora:78px; }          /* (1036 - 880) / 2 = 78 */
+
+@media (min-width:901px){
+  .card{ padding-left:122px !important; padding-right:122px !important; }   /* 44 + 78 */
+  /* tutto quello che deve tornare larga come prima */
+  .card > svg, .card > .binario, .card > .zoomabile:not(.filo),
+  .card > .gf-tempo-scorri, .card > .gf-archi, .card > .gf-scala,
+  .card > .gf-scala-eti, .card > .gf-confronto, .card > table,
+  .card > .sfonda, .dida.sfonda{
+    margin-left:calc(-1 * var(--sfora)); margin-right:calc(-1 * var(--sfora));
+  }
+  .dida.sfonda{ max-width:1036px; }
+}
+/* ⚠ svg.mappa NON prende i margini negativi: perderebbe la centratura
+   (sta dentro .binario, che sfonda per conto suo). */
+
+.card p.t{ font-size:var(--corpo); }
+.boxlist li{ font-size:18px; }
+.shelfc p{ font-size:17.5px; }
+blockquote.def p.q{ font-size:24px; }
+@media (max-width:900px){ :root{ --corpo:19px; } }
+@media (max-width:700px){ :root{ --corpo:18px; } }
+
+/* ---------- LE FOTO: le tre larghezze ---------- */
+.filo{ max-width:880px; margin-left:auto; margin-right:auto; }
+.sfonda{ max-width:1036px; margin-left:auto; margin-right:auto; }
+.fotoriga{ max-width:880px; margin-left:auto; margin-right:auto; }
+
+/* ---------- LA LENTE NUOVA ---------- */
+.zoomabile{ position:relative; }
+.zoomabile > .lente{
+  position:absolute; top:10px; right:10px; width:44px; height:44px; border-radius:50%;
+  border:1px solid #D9DACF; background:rgba(255,255,255,.94); color:#57534a;
+  display:flex; align-items:center; justify-content:center; cursor:zoom-in; padding:0; z-index:3;
+  transition:opacity .16s ease, transform .16s ease;
+}
+.zoomabile > .lente svg{ width:22px; height:22px; display:block; }
+.zoomabile > .lente:hover{ background:#fff; border-color:#C9C4B8; transform:scale(1.06); }
+/* col mouse: compare solo quando ci passi sopra */
+@media (hover:hover) and (pointer:fine){
+  .zoomabile > .lente{ opacity:0; pointer-events:none; }
+  .zoomabile:hover > .lente,
+  .zoomabile:focus-within > .lente{ opacity:1; pointer-events:auto; }
+}
+/* sul telefono il passaggio del mouse non esiste: sempre visibile, un po' piu' piccola */
+@media (hover:none){
+  .zoomabile > .lente{ opacity:1; width:36px; height:36px; top:8px; right:8px; }
+  .zoomabile > .lente svg{ width:19px; height:19px; }
+}
+@media print{ .zoomabile > .lente{ display:none !important; } }
+
+/* il velo: PIENO, cosi' sotto non si legge niente */
+#velofoto, #velografica{ background:#262420 !important; }
+#velofoto img{ border-radius:8px; }
+</style>
+
+<style>
+/* ===================================================================== */
+/*  IMPIANTO NUOVO - moduli con lo stile scritto nel tag   */
+/*  Stessi numeri (carattere 21, colonna 880), ma agganciati all'attributo */
+/*  perche' qui le classi non ci sono.                                    */
+/* ===================================================================== */
+section[data-screen-label] p[style*="font-size:19px"]{ font-size:var(--corpo) !important; }
+section[data-screen-label] li[style*="font-size:17px"]{ font-size:18px !important; }
+
+@media (min-width:901px){
+  /* il riquadro del testo dentro la card: padding 40 -> 118 (40 + 78) */
+  section[data-screen-label] > div[style*="padding:34px 40px"]{
+    padding-left:118px !important; padding-right:118px !important;
+  }
+  /* chi deve restare largo esce dal padding */
+  section[data-screen-label] > div > svg,
+  section[data-screen-label] > div > .binario,
+  section[data-screen-label] > div > .zoomabile:not(.filo),
+  section[data-screen-label] > div > .sfonda{
+    margin-left:calc(-1 * var(--sfora)) !important;
+    margin-right:calc(-1 * var(--sfora)) !important;
+  }
+}
+</style>
+
+<style>
+/* ============ RIFINITURE 25/07 ============ */
+/* la lentina nuova deve vincere anche sui moduli che hanno un <style> nel body */
+.zoomabile > .lente{
+  width:44px !important; height:44px !important; border-radius:50% !important;
+  top:10px !important; right:10px !important;
+  background:rgba(255,255,255,.94) !important; border:1px solid #D9DACF !important;
+}
+.zoomabile > .lente svg{ width:22px !important; height:22px !important; }
+@media (hover:hover) and (pointer:fine){
+  .zoomabile > .lente{ opacity:0 !important; pointer-events:none !important; }
+  .zoomabile:hover > .lente, .zoomabile:focus-within > .lente{
+    opacity:1 !important; pointer-events:auto !important; }
+}
+@media (hover:none){
+  .zoomabile > .lente{ opacity:1 !important; width:38px !important; height:38px !important;
+    top:8px !important; right:8px !important; }
+  .zoomabile > .lente svg{ width:20px !important; height:20px !important; }
+}
+/* il guscio che avvolge la singola foto, quando il contenitore non si presta */
+.zoom-foto{ position:relative; display:block; line-height:0; }
+/* i moduli senza classi: l'etichetta sta su section E su div */
+[data-screen-label] p[style*="font-size:19px"]{ font-size:var(--corpo) !important; }
+[data-screen-label] li[style*="font-size:17px"]{ font-size:18px !important; }
+@media (min-width:901px){
+  [data-screen-label] > div[style*="padding:34px 40px"]{
+    padding-left:118px !important; padding-right:118px !important; }
+  [data-screen-label] > div > svg,
+  [data-screen-label] > div > .binario,
+  [data-screen-label] > div > .zoomabile:not(.filo),
+  [data-screen-label] > div > .sfonda{
+    margin-left:calc(-1 * var(--sfora)) !important;
+    margin-right:calc(-1 * var(--sfora)) !important; }
+}
+</style>
+
+<style>
+/* ============ SELETTORI CON E SENZA SPAZIO ============ */
+/* il browser normalizza lo style scritto nel tag: "font-size: 19px" con lo spazio.
+   Quindi ogni selettore va scritto in entrambe le forme. */
+[data-screen-label] p[style*="font-size:19px"],
+[data-screen-label] p[style*="font-size: 19px"]{ font-size:var(--corpo) !important; }
+[data-screen-label] li[style*="font-size:17px"],
+[data-screen-label] li[style*="font-size: 17px"]{ font-size:18px !important; }
+
+@media (min-width:901px){
+  [data-screen-label] > div[style*="padding:34px 40px"],
+  [data-screen-label] > div[style*="padding: 34px 40px"]{
+    padding-left:118px !important; padding-right:118px !important;   /* 40 + 78 */
+  }
+  /* chi deve restare largo esce dal padding nuovo */
+  [data-screen-label] > div > svg,
+  [data-screen-label] > div > .binario,
+  [data-screen-label] > div > .zoomabile:not(.filo),
+  [data-screen-label] > div > .sfonda{
+    margin-left:calc(-1 * var(--sfora)) !important;
+    margin-right:calc(-1 * var(--sfora)) !important;
+  }
+  /* la fascia dell'illustrazione in cima alla card intro resta com'e' */
+  [data-screen-label] > div[style*="padding:16px 16px 0"],
+  [data-screen-label] > div[style*="padding: 16px 16px 0"]{
+    padding-left:16px !important; padding-right:16px !important;
+  }
+}
+
+/* 13/09/2026: il blocco unico di foto (campionario delle 25 approvate, composizione 3.1) */
+.mos{border:1px solid #D9DACF;border-radius:8px;overflow:hidden;background:#F8F8F3;display:grid;gap:4px;margin:26px 0;}
+.mos>img{display:block;width:100%;height:100%;object-fit:cover;min-width:0;cursor:zoom-in;}
+.mos.g3{grid-template-columns:repeat(3,1fr);}
+.mos.g3>img{aspect-ratio:1/1;}
+</style>
+<style>
+/* ===== Modulo 2 di quarta, blocco A (prova del 7/10/2026) ===== */
+.defn{background:#fff;border:1px solid #D9DACF;border-left:4px solid var(--cp);border-radius:14px;padding:22px 28px 18px;margin:28px 0;}
+.defn-eti{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et);margin-bottom:12px;}
+.defn-eti .med{width:32px;height:32px;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.defn-q{font-family:'Fraunces',serif;font-weight:400;font-size:22px;line-height:1.55;letter-spacing:-.2px;color:#262420;margin:0;}
+.defn-q strong{font-weight:600;}
+.defn-src{margin-top:14px;font-size:11.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#827F75;text-align:right;}
+.esempio{background:#fff;border:1px solid #D9DACF;border-radius:16px;padding:20px 24px;margin:28px 0 0;}
+.esempio-h{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.esempio-h .med,.gem-h .med,.des-h .med{border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.esempio-h .med{width:42px;height:42px;}
+.esempio-eti{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et);}
+.esempio-n{font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.2;color:#262420;margin-top:1px;}
+.esempio p{font-size:18.5px;line-height:1.65;margin:0;color:#33312c;}
+.esempio p+p{margin-top:10px;}
+.dati{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:14px;}
+.dato,.data{background:#F8F8F3;border:1px solid #D9DACF;border-radius:12px;padding:12px 16px;}
+.dato b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:28px;line-height:1.1;font-variant-numeric:lining-nums;color:#262420;}
+.dato span{display:block;font-size:15px;line-height:1.45;color:#57534a;margin-top:4px;}
+.gemelli{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0;}
+.gem{background:#fff;border:1.5px solid var(--cp);border-left-width:6px;border-radius:16px;padding:18px 20px;}
+.gem-h{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+.gem-h .med{width:40px;height:40px;}
+.gem-t{font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.25;color:#262420;}
+.pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{display:inline-flex;align-items:center;font-size:14.5px;line-height:1.3;border:1px solid var(--cp);background:var(--tn);border-radius:999px;padding:6px 13px;color:#262420;}
+.dest{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 10px;}
+.des{background:#fff;border:1px solid #D9DACF;border-top:4px solid var(--cp);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;}
+.des-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.des-h .med{width:36px;height:36px;}
+.des-t{font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:#262420;margin-right:auto;}
+.des-k{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--et);}
+.des-q{font-size:16px;line-height:1.5;color:#4b473e;font-style:italic;margin:0 0 14px;flex:1;}
+.des-v{border-top:1px solid #EEECE3;padding-top:10px;}
+.des-v b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:25px;line-height:1.1;font-variant-numeric:lining-nums;color:#262420;}
+.des-v span{display:block;font-size:14.5px;color:#57534a;margin-top:3px;}
+.fonte{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#827F75;margin:8px 0 0;}
+.passi{margin:28px 0 6px;}
+.passo{display:flex;gap:20px;align-items:flex-start;margin-bottom:34px;}
+.passo:last-child{margin-bottom:0;}
+.passo-n{font-family:'Fraunces',serif;font-weight:600;font-size:38px;line-height:1;min-width:44px;color:var(--cp);}
+.passo-c{flex:1;min-width:0;}
+.passo-l{width:96px;height:4px;border-radius:3px;background:var(--cp);margin:6px 0 12px;}
+.passo-t{font-size:18px;font-weight:600;margin-bottom:6px;color:#262420;}
+.passo p{font-size:18.5px;line-height:1.68;margin:0;color:#3a3833;}
+.datario{display:grid;grid-template-columns:1fr 44px 1fr 44px 1fr;align-items:center;gap:6px;margin-top:14px;}
+.data{align-self:stretch;}
+.data small{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#827F75;}
+.data b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:21px;line-height:1.2;font-variant-numeric:lining-nums;margin:5px 0 3px;color:#262420;}
+.data span{display:block;font-size:15px;line-height:1.45;color:#57534a;}
+.data-fr{display:grid;place-items:center;}
+.vuoto{max-width:620px;margin:40px auto;text-align:center;color:#827F75;font-size:17px;line-height:1.6;background:#F8F8F3;border:1px solid #D9DACF;border-radius:18px;padding:40px 30px;}
+@media (max-width:700px){.prova-bp{padding:20px 18px !important;}.prova-bp-btn{width:100%;min-width:0 !important;}}
+.fine-blocco{text-align:center;color:#827F75;font-size:15px;margin:10px 0 0;}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 30px;}
+.trio-i{width:54px;height:54px;border-radius:50%;border:1.5px solid;display:grid;place-items:center;margin-bottom:12px;}
+.trio-t{font-family:'Fraunces',serif;font-weight:600;font-size:20px;line-height:1.25;margin-bottom:6px;color:#262420;}
+.trio-v p{font-size:17px;line-height:1.55;color:#3a3833;margin:0;}
+.tri{background:#fff;border:1px solid #D9DACF;border-top:4px solid var(--cp);border-radius:14px;padding:16px 18px 16px;}
+.tri-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.tri-h .med{width:40px;height:40px;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.tri-t{font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.2;color:#262420;}
+.tri-lead{font-size:16.5px;line-height:1.45;color:#262420;margin:0 0 12px;}
+.tri-r{display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding-top:12px;border-top:1px solid #EEECE3;}
+.tri-r .k:not(:first-child){margin-top:9px;}
+.tri-r .k{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--et);background:var(--tn);border:1px solid var(--cp);border-radius:999px;padding:3px 10px;white-space:nowrap;}
+.tri-r .v{font-size:15px;line-height:1.45;color:#4b473e;}
+.gem-sub{font-size:15px;font-style:italic;color:#57534a;margin-top:2px;}
+.pn-box{margin:28px 0 8px;}
+.arioso{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;margin:26px 0 10px;}
+.ari-ic{height:36px;}
+.ari-t{font-family:'Fraunces',serif;font-weight:600;font-size:21px;line-height:1.2;color:#262420;margin-top:10px;}
+.ari-v{font-family:'Fraunces',serif;font-weight:600;font-size:30px;line-height:1.2;font-variant-numeric:lining-nums;color:#262420;margin-top:4px;}
+.ari-v span{font-family:'Schibsted Grotesk',sans-serif;font-weight:500;font-size:15px;color:#57534a;}
+.ari p{font-size:16.5px;line-height:1.55;color:#33312c;margin:8px 0 0;}
+@media (max-width:700px){.arioso{grid-template-columns:1fr;gap:22px;}}
+.liq{margin:26px -78px 12px;}
+.liq-asse{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#57534a;margin:0 4px 14px;}
+.liq-asse i{flex:1;height:1.8px;background:#57534a;border-radius:2px;margin-right:-12px;}
+.liq-asse svg{flex:none;}
+.liq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.liq-c{background:#fff;border:1px solid #D9DACF;border-top:4px solid var(--cp);border-radius:14px;padding:18px 20px 20px;}
+.liq-h{display:flex;align-items:center;gap:12px;}
+.liq-h .med{width:40px;height:40px;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.liq-t{font-family:'Fraunces',serif;font-weight:600;font-size:21px;line-height:1.2;color:#262420;}
+.liq-m{display:flex;align-items:center;gap:5px;margin-top:4px;}
+.liq-m b{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--cp);background:#fff;}
+.liq-m b.on{background:var(--cp);}
+.liq-m span{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#827F75;margin-left:4px;}
+.liq-d{font-size:17px;line-height:1.5;color:#262420;margin:14px 0 0;font-weight:500;}
+.liq-eti{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et);margin:14px 0 6px;}
+.liq-es{list-style:none;margin:0;padding:0;}
+.liq-es li{position:relative;padding-left:16px;font-size:15.5px;line-height:1.45;color:#33312c;margin-bottom:6px;}
+.liq-es li::before{content:'';position:absolute;left:2px;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--cp);}
+.liq-p{font-size:15.5px;line-height:1.5;color:#33312c;margin:12px 0 0;padding-top:12px;border-top:1px solid #E6E3D8;}
+@media (max-width:900px){.liq{margin-left:0;margin-right:0;}}
+@media (max-width:760px){.liq-grid{grid-template-columns:1fr;}.liq-asse{display:none;}}
+.pn-t{font-size:17px;line-height:1.6;color:#33312c;margin:10px 0 2px;}
+.pn-leg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:16px 0 4px;}
+.pn-leg b{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:#262420;}
+.pn-leg p{font-size:15px;line-height:1.5;color:#33312c;margin:4px 0 0;}
+.pn-sq{display:inline-block;width:14px;height:14px;border-radius:4px;border:1.2px solid;vertical-align:-1px;margin-right:8px;}
+.pn-q{font-size:16.5px;line-height:1.6;color:#33312c;margin-top:16px;padding-top:14px;border-top:1px solid #E6E3D8;}
+.pn-q b{font-family:'Fraunces',serif;font-weight:600;font-size:17.5px;color:#262420;display:block;margin-bottom:2px;}
+@media (max-width:700px){.pn-leg{grid-template-columns:1fr;gap:10px;}}
+.dom{display:grid;gap:14px;margin:24px 0 12px;}
+.dom-r{display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #D9DACF;border-left:6px solid var(--cp);border-radius:14px;padding:16px 20px;}
+.dom-r .med{width:44px;height:44px;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.dom-a{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et);}
+.dom-q{font-family:'Fraunces',serif;font-weight:600;font-size:21px;line-height:1.25;color:#262420;margin-top:3px;}
+.dom-r p{font-size:16.5px;line-height:1.55;color:#33312c;margin:6px 0 0;}
+@media (max-width:520px){.dom-r{padding:14px 14px;gap:12px;}.dom-r .med{width:36px;height:36px;}.dom-q{font-size:19px;}}
+section[data-screen-label] > div.pn-box > .zoomabile:not(.filo), section[data-screen-label] > div.pn-box > .binario{margin-left:0 !important;margin-right:0 !important;}
+.gem-anche{font-size:14.5px;color:#57534a;margin-top:12px;}
+.lista{list-style:none;margin:0;padding:0;display:grid;gap:11px;}
+.lista li{position:relative;padding-left:16px;font-size:16.5px;line-height:1.55;color:#33312c;}
+.lista li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--cp);}
+.lista b{font-weight:600;color:#262420;}
+@media (max-width:860px){.gemelli{grid-template-columns:1fr;}.dest{grid-template-columns:1fr 1fr;}}
+@media (max-width:760px){.trio{grid-template-columns:1fr;gap:20px;}}
+@media (max-width:760px){.datario{grid-template-columns:1fr;}.data-fr svg{transform:rotate(90deg);}}
+@media (max-width:700px){.defn{padding:18px 18px 14px;}.defn-q{font-size:19px;}.esempio{padding:16px 16px;}.esempio p,.passo p{font-size:16.5px;}.passo{gap:14px;}.dato b{font-size:24px;}}
+@media (max-width:560px){.dest{grid-template-columns:1fr;}}
+/* ===== 8/10/2026: prospetto del conto economico (card 12) e conto in colonna (card 15) ===== */
+.pce{background:#fff;border:1px solid #D9DACF;border-radius:16px;overflow:hidden;margin:28px 0 22px;}
+.pce-top{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:4px 16px;padding:13px 22px 11px;background:#F8F8F3;border-bottom:1px solid #D9DACF;}
+.pce-eti{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4b473e;}
+.pce-sub{font-family:'Fraunces',serif;font-style:italic;font-size:16px;color:#57534a;}
+.pce-r{display:grid;grid-template-columns:28px 38px minmax(0,1fr) auto;align-items:center;column-gap:14px;padding:13px 22px;border-top:1px solid #EEECE3;}
+.pce-top + .pce-r{border-top:0;}
+.pce-col .pce-r{grid-template-columns:28px minmax(0,1fr) auto;}
+.pce-op{width:28px;height:28px;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--cp);background:#fff;display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;line-height:1;color:#262420;}
+.pce-op.muto{border-color:transparent;background:transparent;}
+.pce-med{width:38px;height:38px;box-sizing:border-box;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;}
+.pce-txt{display:block;min-width:0;}
+.pce-v{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:19.5px;line-height:1.25;color:#262420;}
+.pce-s{display:block;font-size:15px;line-height:1.45;color:#57534a;margin-top:2px;}
+.pce-n{font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1;font-variant-numeric:lining-nums tabular-nums;color:#262420;text-align:right;min-width:80px;}
+.pce-ris{background:#eef3f9;border-top-color:#9BBCDD;}
+.pce-fin{background:#e2ecf5;border-top:3px double #5A82AB;}
+.pce-fin .pce-n{font-size:30px;}
+.pce-apri{width:100%;margin:0;font:inherit;text-align:left;color:inherit;background:#fff;border:0;border-top:1px solid #EEECE3;cursor:pointer;transition:background .2s;}
+.pce-apri:hover,.pce-apri[aria-expanded="true"]{background:var(--sf,#fdf7f8);}
+.pce-apri:focus-visible{outline:2px solid var(--cp,#B6677B);outline-offset:-3px;}
+.pce-tog{display:flex;align-items:center;gap:10px;}
+.pce-tog-t{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et,#93455a);white-space:nowrap;}
+.pce-piu{position:relative;width:30px;height:30px;box-sizing:border-box;border-radius:50%;border:1.5px solid var(--cp,#B6677B);background:#fff;flex:none;transition:background .2s;}
+.pce-piu::before,.pce-piu::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;border-radius:2px;background:var(--et,#93455a);transition:transform .28s ease;}
+.pce-piu::after{transform:rotate(90deg);}
+.pce-apri[aria-expanded="true"] .pce-piu{background:var(--tn,#fbeff2);}
+.pce-apri[aria-expanded="true"] .pce-piu::after{transform:rotate(0deg);}
+.pce-det{display:grid;grid-template-rows:0fr;transition:grid-template-rows .32s ease;background:var(--sf,#fdf7f8);}
+.pce-det.on{grid-template-rows:1fr;}
+.pce-det > div{overflow:hidden;min-height:0;visibility:hidden;transition:visibility 0s .32s;}
+.pce-det.on > div{visibility:visible;transition:visibility 0s;}
+.pce-voci{list-style:none;margin:0 22px 0 82px;padding:0 0 12px;border-left:2px solid var(--ch,#E7A2B3);}
+.pce-voci li{position:relative;display:grid;grid-template-columns:18px 230px minmax(0,1fr);column-gap:12px;align-items:center;padding:8px 0 8px 22px;}
+.pce-voci li::before{content:"";position:absolute;left:0;top:50%;width:12px;height:2px;margin-top:-1px;background:var(--ch,#E7A2B3);}
+.pce-vi{display:grid;place-items:center;}
+.pce-vn{font-size:16.5px;font-weight:600;line-height:1.3;color:#262420;}
+.pce-vs{font-size:15px;line-height:1.45;color:#57534a;}
+@media print{.pce-det{grid-template-rows:1fr !important;}.pce-det > div{visibility:visible !important;}.pce-tog{display:none !important;}}
+@media (max-width:860px){.pce-voci li{grid-template-columns:18px minmax(0,1fr);}.pce-vs{grid-column:2;}}
+@media (max-width:700px){
+  .pce-r{grid-template-columns:28px minmax(0,1fr) auto;column-gap:10px;padding:12px 14px;}
+  .pce-med,.pce-tog-t{display:none;}
+  .pce-top{padding:11px 14px 9px;}
+  .pce-v{font-size:17.5px;}
+  .pce-s{font-size:14px;}
+  .pce-n{font-size:23px;min-width:0;}
+  .pce-fin .pce-n{font-size:26px;}
+  .pce-voci{margin:0 14px 0 27px;}
+  .pce-voci li{padding-left:18px;column-gap:10px;}
+  .pce-voci li::before{width:10px;}
+  .pce-vn{font-size:15.5px;}
+  .pce-vs{font-size:14px;}
+}
+.fonte + p.t{margin-top:26px;}
+.psp-cols{display:grid;grid-template-columns:1fr 1fr;}
+.psp-col{min-width:0;}
+.psp-col + .psp-col{border-left:1px solid #D9DACF;}
+.psp-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px;padding:12px 18px 10px;border-bottom:1px solid #EEECE3;}
+.psp-h .pce-sub{font-size:15.5px;}
+.psp .pce-r{grid-template-columns:38px minmax(0,1fr) auto;padding:14px 18px;}
+.psp .psp-h + .pce-r{border-top:0;}
+.psp-r.acceso,.psp-r.acceso:hover,.psp-r.acceso[aria-expanded="true"]{background:linear-gradient(var(--cp),var(--cp)) left top/4px 100% no-repeat,var(--tn);}
+.psp-r.spento .pce-v{color:#57534a;}
+.psp-r.spento .pce-s{color:#827F75;}
+.psp .pce-voci{margin:0 18px 0 36px;}
+.psp .pce-voci li{grid-template-columns:18px minmax(0,1fr);align-items:start;row-gap:1px;}
+.psp .pce-vi{margin-top:2px;}
+.psp .pce-vs{grid-column:2;}
+.psp .pce-voci li::before{top:19px;}
+.psp-tot{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;column-gap:14px;padding:12px 18px;border-top:3px double #827F75;background:#F8F8F3;}
+.psp-tot > span:not(.pce-op){font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:#262420;text-align:center;}
+@media (max-width:1100px){.psp .pce-tog-t{display:none;}}
+@media (max-width:900px){.psp-cols{grid-template-columns:1fr;}.psp-col + .psp-col{border-left:0;border-top:1px solid #D9DACF;}}
+@media (max-width:700px){
+  .psp .pce-r{grid-template-columns:34px minmax(0,1fr) auto;padding:12px 14px;}
+  .psp .pce-med{display:grid;width:34px;height:34px;}
+  .psp-h{padding:11px 14px 9px;}
+  .psp .pce-voci{margin:0 14px 0 30px;}
+  .psp-tot{padding:11px 14px;column-gap:10px;grid-template-columns:auto auto auto;justify-content:center;}
+  .psp-tot > span:not(.pce-op){font-size:16.5px;white-space:nowrap;}
+}
+.pce-con .pce-apri{grid-template-columns:28px minmax(0,1fr) auto auto;}
+.pce-con .pce-voci{margin-left:35px;}
+.pce-con .pce-voci li{grid-template-columns:18px 230px minmax(0,1fr) auto;}
+.pce-vv{font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.2;font-variant-numeric:lining-nums tabular-nums;color:#4b473e;text-align:right;min-width:60px;}
+@media (max-width:860px){
+  .pce-con .pce-voci li{grid-template-columns:18px minmax(0,1fr) auto;align-items:start;row-gap:1px;}
+  .pce-con .pce-vi{grid-column:1;grid-row:1;margin-top:2px;}
+  .pce-con .pce-vn{grid-column:2;grid-row:1;}
+  .pce-con .pce-vv{grid-column:3;grid-row:1;}
+  .pce-con .pce-vs{grid-column:2 / 4;grid-row:2;}
+  .pce-con .pce-voci li::before{top:19px;}
+}
+@media (max-width:700px){
+  .pce-con .pce-apri{grid-template-columns:28px minmax(0,1fr) auto auto;}
+  .pce-con .pce-voci{margin:0 14px 0 27px;}
+  .pce-vv{font-size:17px;min-width:0;}
+}
+.imp2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 26px;}
+.imp{background:#fff;border:1px solid #D9DACF;border-top:4px solid var(--cp);border-radius:14px;padding:16px 20px 18px;}
+.imp-h{display:flex;align-items:center;gap:12px;}
+.imp-h .med{width:40px;height:40px;box-sizing:border-box;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.imp-sig{font-family:'Fraunces',serif;font-weight:600;font-size:23px;line-height:1.1;color:#262420;}
+.imp-nome{font-family:'Fraunces',serif;font-style:italic;font-size:15.5px;line-height:1.3;color:#57534a;margin-top:2px;}
+.imp-al{margin-left:auto;text-align:right;flex:none;padding-left:8px;}
+.imp-al b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:28px;line-height:1;font-variant-numeric:lining-nums;color:#262420;}
+.imp-al span{display:block;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--et);margin-top:5px;}
+.imp p{font-size:16.5px;line-height:1.55;color:#33312c;margin:14px 0 0;padding-top:12px;border-top:1px solid #EEECE3;}
+@media (max-width:760px){.imp2{grid-template-columns:1fr;}}
+@media (max-width:600px){
+  .imp{padding:14px 16px 16px;}
+  .imp-h{flex-wrap:wrap;row-gap:10px;}
+  .imp-h > div:nth-child(2){flex:1;min-width:0;}
+  .imp-al{width:100%;margin-left:0;padding-left:0;text-align:left;display:flex;align-items:baseline;gap:10px;}
+  .imp-al b{font-size:24px;}
+  .imp-al span{margin-top:0;}
+}
+</style>
+
+<style>
+/* ===== Qualifica (10/10/2026) ===== */
+.ria-anteprima{display:block;position:relative;width:100%;padding:0;aspect-ratio:16/9;border:1px solid #D9DACF;cursor:pointer;border-radius:8px;overflow:hidden;background:#fff;}
+.ria-play{transition:transform .18s ease,background .18s ease;}
+.ria-anteprima:hover .ria-play,.ria-anteprima:focus-visible .ria-play{transform:translate(-50%,-50%) scale(1.07) !important;background:rgba(38,36,32,.88) !important;}
+.ria-anteprima:focus-visible{outline:2px solid #5A82AB;outline-offset:3px;}
+#video-tutorial{display:none;width:100%;aspect-ratio:16/9;border:1px solid #D9DACF;border-radius:8px;background:#fff;}
+.trio .tri-lead{font-size:16px;}
+.torta-riga{display:grid;grid-template-columns:300px 1fr;gap:30px;align-items:center;margin:28px 0 6px;}
+.torta-t{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.torta-t .des{padding:14px 16px;}
+.torta-t .des-t{font-size:18px;}
+.fetta-pc{font-family:'Fraunces',serif;font-weight:600;font-size:24px;line-height:1;font-variant-numeric:lining-nums;color:#262420;}
+.fx{white-space:nowrap;font-variant-numeric:lining-nums;}
+.passo-t{font-size:19px;}
+.errori li{font-size:18px;line-height:1.6;margin-bottom:6px;}
+.vai-ese{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:12px;background:#E65900;color:#fff;font-family:'Schibsted Grotesk',sans-serif;font-size:16px;font-weight:600;padding:13px 22px;cursor:pointer;}
+.vai-ese:hover{background:#b34400;}
+/* esercizi */
+.es{background:#fff;border:1px solid #D9DACF;border-left:4px solid var(--cp);border-radius:16px;padding:26px 30px 24px;margin:0 auto 26px;max-width:1036px;}
+.es-h{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.es-n{width:44px;height:44px;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;font-family:'Fraunces',serif;font-weight:600;font-size:21px;color:#262420;flex:none;}
+.es-k{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--et);}
+.es-t{font-family:'Fraunces',serif;font-weight:600;font-size:26px;line-height:1.15;color:#262420;}
+.es-c{font-size:17px;line-height:1.6;color:#33312c;margin:0 0 10px;}
+.es-nota{font-size:16px;line-height:1.55;color:#57534a;background:var(--tn);border:1px solid var(--ch);border-radius:12px;padding:10px 14px;margin:0 0 12px;}
+table.ricetta,table.listino{border-collapse:collapse;width:100%;max-width:560px;margin:8px 0 18px;background:#fff;}
+table.ricetta th,table.listino th{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#827F75;text-align:left;padding:8px 12px;border-bottom:1.5px solid #D9DACF;}
+table.ricetta td,table.listino td{font-size:17px;line-height:1.4;padding:8px 12px;border-bottom:1px solid #EEECE3;color:#262420;}
+table.ricetta .g,table.listino .g{text-align:right;white-space:nowrap;font-variant-numeric:lining-nums;}
+.prova-r{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:4px 0 14px;padding:14px 16px;background:#F8F8F3;border:1px solid #D9DACF;border-radius:12px;}
+.prova-r label{font-size:15px;font-weight:600;color:#262420;}
+.campo{display:inline-flex;align-items:center;gap:6px;}
+.campo input{width:118px;font:inherit;font-size:18px;font-variant-numeric:lining-nums;padding:8px 10px;border:1px solid #C9C4B8;border-radius:9px;background:#fff;color:#262420;text-align:right;}
+.campo input:focus{outline:2px solid var(--cp);outline-offset:1px;}
+.campo span{font-size:17px;color:#57534a;}
+.controlla{border:1px solid #57534a;background:#57534a;color:#F8F8F3;border-radius:10px;padding:9px 16px;font-family:'Schibsted Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+.controlla:hover{background:#262420;}
+.esito{font-size:15.5px;font-weight:600;}
+.esito.si{color:#3f6b52;}
+.esito.quasi{color:#7a611f;}
+.esito.no{color:#93455a;}
+.apri-sol{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--cp);background:var(--tn);color:var(--et);border-radius:10px;padding:9px 16px;font-family:'Schibsted Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;}
+.apri-sol:hover{background:#fff;}
+.sol{margin-top:18px;border-top:1px solid #EEECE3;padding-top:16px;}
+.sol-t{font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#827F75;margin-bottom:6px;}
+.sol-scorri{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+table.soltab{border-collapse:collapse;min-width:640px;width:100%;}
+table.soltab td{font-size:16.5px;line-height:1.4;padding:7px 10px;border-bottom:1px solid #EEECE3;color:#262420;white-space:nowrap;font-variant-numeric:lining-nums;}
+table.soltab td:last-child{text-align:right;}
+.sol-box{border:1px solid #D9DACF;border-radius:12px;padding:12px 16px;margin:16px 0 12px;background:#F8F8F3;}
+.sol-box p,.sol-fine p{font-size:16.5px;line-height:1.6;margin:4px 0;color:#262420;font-variant-numeric:lining-nums;}
+.sol .lab{display:inline-block;min-width:150px;font-weight:600;color:#57534a;}
+.stacco{display:inline-block;width:34px;}
+.sol-fine .finale{display:inline-block;margin-top:6px;padding:8px 14px;border:1.5px solid var(--cp);border-radius:10px;background:var(--tn);}
+/* listino e documenti */
+.cerca{margin:20px 0 6px;}
+.cerca input{width:100%;max-width:420px;font:inherit;font-size:17px;padding:10px 14px;border:1px solid #C9C4B8;border-radius:11px;background:#fff;color:#262420;}
+.listini{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;align-items:start;}
+.listini table.listino{max-width:none;margin:10px 0 0;}
+.nessuno{font-size:16px;color:#827F75;margin:14px 0 0;}
+.scarica{display:grid;gap:12px;margin-top:18px;}
+.doc{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #D9DACF;border-left:5px solid var(--cp);border-radius:14px;padding:14px 18px;text-decoration:none;color:#262420;}
+.doc:hover{background:var(--tn);}
+.doc .med{width:42px;height:42px;border-radius:50%;background:var(--tn);border:1.5px solid var(--cp);display:grid;place-items:center;flex:none;}
+.doc-t{flex:1;min-width:0;}
+.doc-t b{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:19px;line-height:1.25;}
+.doc-t span{display:block;font-size:15px;line-height:1.45;color:#57534a;margin-top:2px;}
+.doc-g{flex:none;display:grid;place-items:center;}
+@media (max-width:900px){.torta-riga{grid-template-columns:1fr;}.torta-g{max-width:260px;margin:0 auto;}}
+@media (max-width:760px){.listini{grid-template-columns:1fr;}.listini table.listino + table.listino{margin-top:0;}.listini table.listino + table.listino thead{display:none;}}
+@media (max-width:700px){.passo .fx{white-space:normal;}}
+@media (max-width:640px){.torta-t{grid-template-columns:1fr;}.es{padding:20px 16px 18px;}.es-t{font-size:23px;}.sol .lab{display:block;min-width:0;}}
+</style>
+</head>
+<body>
+<div style="min-height:100vh;">
+<header class="chrome" style="position:sticky;top:0;z-index:40;background:rgba(238,240,234,.92);backdrop-filter:blur(10px);border-bottom:1px solid #D9DACF;"><div style="max-width:1180px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:18px;"><button class="navtoggle" onclick="navToggle()" aria-label="Apri il menu delle sezioni"><i data-lucide="menu" class="lucide"></i>Sezioni</button><nav class="navtabs" style="flex:1;min-width:0;display:flex;gap:2px;overflow-x:auto;"><button data-go="lez" class="on" onclick="goTab('lez')"><i data-lucide="clapperboard" class="lucide"></i>Il tutorial</button><button data-go="ese" onclick="goTab('ese')"><i data-lucide="pencil" class="lucide"></i>Esercizi</button><button data-go="mat" onclick="goTab('mat')"><i data-lucide="clipboard-list" class="lucide"></i>Listino e testi</button></nav><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto;"><span style="font-family:'Fraunces',serif;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#827F75;">Esame di</span><span style="height:38px;padding:0 14px;border-radius:11px;background:#EBC871;color:#7a611f;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:600;font-size:18px;letter-spacing:-.2px;">qualifica</span></div></div><div class="navdrop" id="navdrop" style="display:none;"><div style="max-width:1180px;margin:0 auto;padding:4px 14px 12px;display:grid;gap:3px;border-top:1px solid #D9DACF;"><button data-go="lez" class="on" onclick="goTab('lez')"><i data-lucide="clapperboard" class="lucide"></i>Il tutorial</button><button data-go="ese" onclick="goTab('ese')"><i data-lucide="pencil" class="lucide"></i>Esercizi</button><button data-go="mat" onclick="goTab('mat')"><i data-lucide="clipboard-list" class="lucide"></i>Listino e testi</button></div></div></header><main style="max-width:1180px;margin:0 auto;padding:34px 28px 90px;"><div class="tabpanel on" id="p-lez"><div style="text-align:center;max-width:760px;margin:6px auto 40px;"><h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:48px;line-height:1.02;letter-spacing:-1.6px;margin:0;color:#57534a;text-wrap:balance;">Il costo del dolce e il prezzo di vendita.</h1><div style="width:70px;height:4px;border-radius:4px;background:#E65900;margin:22px auto 0;"></div><p style="font-family:'Fraunces',serif;font-style:italic;font-weight:500;font-size:23px;line-height:1.3;letter-spacing:-.3px;color:#5c5952;margin:20px auto 0;text-wrap:balance;">La parte di economia della prova tecnico-programmatoria dell'esame di qualifica.</p><p style="font-size:17px;line-height:1.6;color:#827F75;margin:14px auto 0;max-width:640px;text-wrap:balance;">Che cosa chiede la prova, la torta del prezzo, il video tutorial, i sette passi da seguire e gli errori da evitare. Negli esercizi cinque dolci con la soluzione; nel listino tutti i prezzi.</p></div><section data-screen-label="Card 01" class="card" style="border-top:3px solid #AC6144;"><div class="wm" style="color:rgba(172,97,68,.30);">01</div><div class="kicker" style="background:rgba(221,151,122,.22);color:#8a4a30;">La prova</div><h2>Che cosa chiede la prova.</h2><p class="t">Nella <strong class="hl">prova tecnico-programmatoria</strong> dell'esame di qualifica c'è una parte di economia: partendo dalla ricetta di un dolce si calcola il <strong class="hl">costo della materia prima</strong> e poi il <strong class="hl">prezzo di vendita</strong>.</p><div class="defn" style="--ch:#DD977A;--cp:#AC6144;--et:#8a4a30;--tn:#f9efea"><div class="defn-eti"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><g fill="#AC6144"><path d="M6.5 12a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/><path fill-rule="evenodd" d="M11.185 1H4.5A1.5 1.5 0 0 0 3 2.5v15A1.5 1.5 0 0 0 4.5 19h11a1.5 1.5 0 0 0 1.5-1.5V7.202a1.5 1.5 0 0 0-.395-1.014l-4.314-4.702A1.5 1.5 0 0 0 11.185 1M4 2.5a.5.5 0 0 1 .5-.5h6.685a.5.5 0 0 1 .369.162l4.314 4.702a.5.5 0 0 1 .132.338V17.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5z" clip-rule="evenodd"/><path d="M11 7h5.5a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 1 0z"/></g></svg></span>Il testo della prova</div><p class="defn-q">«L'allieva/o dovrà, in base alla distinta delle derrate, alla relativa grammatura ed al prezzo unitario dei generi alimentari, calcolare i costi (consultando il listino prezzi). Inoltre, dovrà essere calcolato il prezzo di vendita facendo riferimento ai seguenti presupposti simulati.»</p><div class="defn-src">Prova tecnico-programmatoria · Regione Piemonte</div></div><p class="t">Alla prova si lavora con tre strumenti.</p><div class="trio sfonda"><div class="tri" style="--ch:#9AC3AB;--cp:#5C8B73;--et:#3f6b52;--tn:#eef5f0"><div class="tri-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><g fill="#5C8B73" fill-rule="evenodd" clip-rule="evenodd"><path d="M10.08 4.304L2.244 3.019A1.5 1.5 0 0 0 .5 4.5v9.738a1.5 1.5 0 0 0 1.268 1.482l8.155 1.275a.5.5 0 0 0 .577-.494V4.797a.5.5 0 0 0-.42-.493m-8-.298L9.5 5.222v10.694L1.923 14.73a.5.5 0 0 1-.423-.493V4.5a.5.5 0 0 1 .58-.494"/><path d="M18 3a1.5 1.5 0 0 0-.243.02L9.92 4.303a.5.5 0 0 0-.419.493V16.5a.5.5 0 0 0 .577.494l8.155-1.275a1.5 1.5 0 0 0 1.268-1.482V4.5A1.5 1.5 0 0 0 18 3m.077 11.73L10.5 15.917V5.222l7.42-1.216a.5.5 0 0 1 .58.494v9.737a.5.5 0 0 1-.423.493"/></g></svg></span><span class="tri-t">La ricetta</span></div><p class="tri-lead" style="margin:0;">Gli ingredienti per 10 persone, con le grammature. Si trova nella prima parte della prova.</p></div><div class="tri" style="--ch:#9BBCDD;--cp:#5A82AB;--et:#3a5f85;--tn:#eef3f9"><div class="tri-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><g fill="#5A82AB"><path d="M6.5 6a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m0 4a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0m0 4a1.5 1.5 0 1 1-3 0a1.5 1.5 0 0 1 3 0"/><path fill-rule="evenodd" d="M7.5 6.5A.5.5 0 0 1 8 6h8a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5m0 4A.5.5 0 0 1 8 10h8a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5m0 4A.5.5 0 0 1 8 14h8a.5.5 0 0 1 0 1H8a.5.5 0 0 1-.5-.5" clip-rule="evenodd"/></g></svg></span><span class="tri-t">Il listino prezzi</span></div><p class="tri-lead" style="margin:0;">Il prezzo di ogni ingrediente, in euro al chilo. Nel testo della prova i prezzi non ci sono: sono tutti nel listino, a parte.</p></div><div class="tri" style="--ch:#F0B783;--cp:#C07F49;--et:#8a5320;--tn:#fbf1e7"><div class="tri-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><g fill="#C07F49"><path fill-rule="evenodd" d="M2.5 3v14A2.5 2.5 0 0 0 5 19.5h10a2.5 2.5 0 0 0 2.5-2.5V3A2.5 2.5 0 0 0 15 .5H5A2.5 2.5 0 0 0 2.5 3M5 18.5A1.5 1.5 0 0 1 3.5 17V3A1.5 1.5 0 0 1 5 1.5h10A1.5 1.5 0 0 1 16.5 3v14a1.5 1.5 0 0 1-1.5 1.5z" clip-rule="evenodd"/><path d="M5 7.5v-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5m7 8.2v-4.9a.8.8 0 0 1 .8-.8h1.4a.8.8 0 0 1 .8.8v4.9a.8.8 0 0 1-.8.8h-1.4a.8.8 0 0 1-.8-.8M5 12v-1.5a.5.5 0 0 1 .5-.5H7a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-.5.5H5.5A.5.5 0 0 1 5 12m3.5 0v-1.5A.5.5 0 0 1 9 10h1.5a.5.5 0 0 1 .5.5V12a.5.5 0 0 1-.5.5H9a.5.5 0 0 1-.5-.5M5 16v-1.5a.5.5 0 0 1 .5-.5H7a.5.5 0 0 1 .5.5V16a.5.5 0 0 1-.5.5H5.5A.5.5 0 0 1 5 16m3.5 0v-1.5A.5.5 0 0 1 9 14h1.5a.5.5 0 0 1 .5.5V16a.5.5 0 0 1-.5.5H9a.5.5 0 0 1-.5-.5"/></g></svg></span><span class="tri-t">La calcolatrice</span></div><p class="tri-lead" style="margin:0;">La porti tu, insieme ai fogli bianchi per i calcoli se quelli della prova non bastano.</p></div></div><p class="t">Il prezzo si calcola sulla <strong class="hl">ricetta intera</strong>, cioè per 10 persone, e alla fine si aggiunge l'<strong class="hl">IVA al 10 %</strong>. Nella prova si valutano sia il contenuto tecnico professionale sia la correttezza dei calcoli: per questo si scrivono tutti i passaggi.</p></section><section data-screen-label="Card 02" class="card" style="border-top:3px solid #5C8B73;"><div class="wm" style="color:rgba(92,139,115,.30);">02</div><div class="kicker" style="background:rgba(154,195,171,.22);color:#3f6b52;">Il prezzo di vendita</div><h2>Il prezzo è una torta in quattro fette.</h2><p class="t">Il testo della prova scompone il prezzo di vendita senza IVA in <strong class="hl">quattro parti</strong>, come una torta tagliata in quattro fette. Le percentuali sono scritte nel testo: si controllano ogni volta.</p><div class="torta-riga sfonda"><div class="torta-g"><svg viewBox="0 0 300 300" role="img" aria-label="La torta del prezzo: materia prima 30 per cento, costi fissi 35, costi variabili 25, utile 10" style="display:block;width:100%;max-width:280px;height:auto;margin:0 auto;"><path d="M150,150 L150.00,18.00 A132,132 0 0 1 275.54,190.79 Z" fill="#9BBCDD" stroke="#F8F8F3" stroke-width="4" stroke-linejoin="round"/><text x="216.2" y="111.3" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="26" fill="#262420" style="font-variant-numeric:lining-nums">30 %</text><path d="M150,150 L275.54,190.79 A132,132 0 0 1 43.21,227.59 Z" fill="#E7A2B3" stroke="#F8F8F3" stroke-width="4" stroke-linejoin="round"/><text x="162.8" y="240.2" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="26" fill="#262420" style="font-variant-numeric:lining-nums">35 %</text><path d="M150,150 L43.21,227.59 A132,132 0 0 1 72.41,43.21 Z" fill="#EBC871" stroke="#F8F8F3" stroke-width="4" stroke-linejoin="round"/><text x="69.2" y="146.6" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="26" fill="#262420" style="font-variant-numeric:lining-nums">25 %</text><path d="M150,150 L72.41,43.21 A132,132 0 0 1 150.00,18.00 Z" fill="#8AC5C1" stroke="#F8F8F3" stroke-width="4" stroke-linejoin="round"/><text x="121.4" y="69.0" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="600" font-size="19" fill="#262420" style="font-variant-numeric:lining-nums">10 %</text><circle cx="150" cy="150" r="134" fill="none" stroke="#D9DACF" stroke-width="1.2"/></svg></div><div class="torta-t"><div class="des" style="--ch:#9BBCDD;--cp:#5A82AB;--et:#3a5f85;--tn:#eef3f9"><div class="des-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#5A82AB"><path d="M3.712 2.5H2.5a.5.5 0 0 1 0-1h1.603a.5.5 0 0 1 .485.379l1.897 7.6a.5.5 0 0 1-.97.242z"/><path fill-rule="evenodd" d="M15.495 7.5h-7.99q-.226 0-.447.05A2.02 2.02 0 0 0 5.55 9.969l.783 3.461A2.01 2.01 0 0 0 8.29 15h6.422a2.01 2.01 0 0 0 1.956-1.57l.783-3.462q.05-.221.05-.449A2.01 2.01 0 0 0 15.496 7.5M7.283 8.525a1 1 0 0 1 .223-.025h7.989a1.013 1.013 0 0 1 .98 1.247l-.784 3.462a1.01 1.01 0 0 1-.98.791H8.29c-.468 0-.875-.328-.98-.791l-.783-3.462a1.02 1.02 0 0 1 .757-1.222" clip-rule="evenodd"/><path d="M17 16.75a1.75 1.75 0 1 1-3.5 0a1.75 1.75 0 0 1 3.5 0m-7 0a1.75 1.75 0 1 1-3.5 0a1.75 1.75 0 0 1 3.5 0"/></g></svg></span><span class="des-t">Materia prima</span><span class="fetta-pc">30 %</span></div><p class="des-q" style="font-style:normal;margin:0;">Gli ingredienti del dolce, con i prezzi del listino.</p></div><div class="des" style="--ch:#E7A2B3;--cp:#B6677B;--et:#93455a;--tn:#fbeff2"><div class="des-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#B6677B"><path d="M2.5 18.5a.5.5 0 0 1 0-1h16a.5.5 0 0 1 0 1z"/><path d="M6.5 17.5a.5.5 0 0 1-1 0V4.808C5.5 3.272 6.602 2 8 2h5c1.398 0 2.5 1.272 2.5 2.808V17.5a.5.5 0 0 1-1 0V4.808C14.5 3.795 13.811 3 13 3H8c-.811 0-1.5.795-1.5 1.808z"/><path d="M8.5 4.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1A.5.5 0 0 1 8 6V5a.5.5 0 0 1 .5-.5m3 0h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1A.5.5 0 0 1 11 6V5a.5.5 0 0 1 .5-.5m0 3h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1A.5.5 0 0 1 11 9V8a.5.5 0 0 1 .5-.5m0 3h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m0 3h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5m-3-6h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1A.5.5 0 0 1 8 9V8a.5.5 0 0 1 .5-.5m0 6h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1A.5.5 0 0 1 8 15v-1a.5.5 0 0 1 .5-.5m0-3h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1A.5.5 0 0 1 8 12v-1a.5.5 0 0 1 .5-.5"/></g></svg></span><span class="des-t">Costi fissi</span><span class="fetta-pc">35 %</span></div><p class="des-q" style="font-style:normal;margin:0;">Affitto del laboratorio, attrezzature, stipendi: si pagano anche quando non si produce.</p></div><div class="des" style="--ch:#EBC871;--cp:#BB963C;--et:#7a611f;--tn:#faf4e2"><div class="des-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#BB963C" fill-rule="evenodd" clip-rule="evenodd"><path d="M13.09 14.024a4.61 4.61 0 0 0-2.377-4.279a.6.6 0 0 0-.809.201l-.964 1.543l-.802-.97a.5.5 0 0 0-.734-.039a4.6 4.6 0 0 0-1.395 3.544a3.54 3.54 0 0 0 7.08 0m-5.353-2.42l-.062.082a3.6 3.6 0 0 0-.669 2.26l.003.059a2.54 2.54 0 0 0 5.08 0l.003-.058c.007-.065.163-1.853-1.473-3.069l-.081-.059l-1.044 1.67a.6.6 0 0 1-.971.064z"/><path d="M8.974 2.09a.599.599 0 0 1 1.017-.304c.194.198.567.59.946 1.042c.372.443.778.976 1.012 1.451c.228.464.47 1.064.661 1.565l.889-1.48a.6.6 0 0 1 .98-.07c1.263 1.56 1.892 3.231 2.205 4.507c.157.639.236 1.182.276 1.568a8 8 0 0 1 .04.58V11c0 3.897-3.091 7.07-7.002 7.07S3 14.896 3 10.998c0-1.073.507-3.6 2.007-5.672a.6.6 0 0 1 .998.043L7.02 7.06c.308-.482.72-1.159 1.033-1.784c.45-.9.807-2.597.921-3.185m.823.95c-.181.8-.48 1.942-.85 2.684c-.492.983-1.201 2.063-1.445 2.426a.6.6 0 0 1-1.01-.026l-1.02-1.698C4.376 8.2 4 10.193 4 11c0 3.358 2.654 6.068 5.998 6.068S16 14.358 16 11v-.028l-.004-.1a8 8 0 0 0-.031-.401a11 11 0 0 0-.252-1.431a10.7 10.7 0 0 0-1.66-3.655l-1.014 1.688a.601.601 0 0 1-1.081-.108c-.162-.454-.559-1.538-.907-2.244c-.177-.361-.516-.817-.88-1.25a17 17 0 0 0-.374-.43"/></g></svg></span><span class="des-t">Costi variabili</span><span class="fetta-pc">25 %</span></div><p class="des-q" style="font-style:normal;margin:0;">Energia del forno, imballaggi: crescono quando si produce di più.</p></div><div class="des" style="--ch:#8AC5C1;--cp:#4E918C;--et:#2f635f;--tn:#edf5f4"><div class="des-h"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#4E918C" fill-rule="evenodd" clip-rule="evenodd"><path d="M15.702 10.115C14.78 9.742 13.47 9.5 12 9.5v-1c1.567 0 3.008.256 4.076.687c.533.216.998.484 1.337.809c.34.325.587.74.587 1.226c0 .487-.246.901-.587 1.227c-.34.324-.804.593-1.337.808c-1.068.432-2.51.687-4.076.687c-1.567 0-3.008-.255-4.076-.687c-.533-.215-.998-.484-1.337-.808c-.34-.326-.587-.74-.587-1.227h1c0 .127.062.297.278.504s.558.417 1.02.604c.923.373 2.231.614 3.702.614c1.47 0 2.78-.241 3.702-.614c.462-.187.803-.397 1.02-.604s.278-.377.278-.504s-.062-.297-.278-.503c-.217-.208-.558-.418-1.02-.604"/><path d="M6.5 11.167a.5.5 0 0 1 .5.5v3.11c0 .128.062.298.278.504c.217.208.558.418 1.02.605c.923.372 2.231.614 3.702.614c1.47 0 2.78-.242 3.702-.614c.462-.187.803-.397 1.02-.605c.216-.206.278-.376.278-.503v-3.111a.5.5 0 0 1 1 0v3.11c0 .488-.246.902-.587 1.227s-.804.593-1.337.809c-1.068.431-2.51.687-4.076.687c-1.567 0-3.008-.256-4.076-.687c-.533-.215-.998-.484-1.337-.809c-.34-.325-.587-.74-.587-1.226v-3.111a.5.5 0 0 1 .5-.5"/><path d="M8.7 16.726V13h1v3.726zm4.4-.226v-3h1v3zM2.278 4.719c-.216.206-.278.376-.278.503s.062.297.278.504s.558.417 1.02.604c.923.373 2.231.614 3.702.614c1.47 0 2.78-.241 3.702-.614c.462-.187.803-.397 1.02-.604S12 5.349 12 5.222s-.062-.297-.278-.503c-.217-.208-.558-.418-1.02-.605C9.779 3.742 8.47 3.5 7 3.5s-2.78.242-3.702.614c-.462.187-.803.397-1.02.605m.646-1.532C3.992 2.756 5.434 2.5 7 2.5c1.567 0 3.008.256 4.076.687c.533.216.998.484 1.337.809c.34.325.587.74.587 1.226c0 .487-.246.901-.587 1.227c-.34.324-.804.593-1.337.808c-1.068.432-2.51.687-4.076.687c-1.567 0-3.008-.255-4.076-.687c-.533-.215-.998-.484-1.337-.808C1.247 6.123 1 5.709 1 5.222c0-.486.246-.9.587-1.226s.804-.593 1.337-.809"/><path d="M1.5 5.167a.5.5 0 0 1 .5.5v3.11c0 .128.062.298.278.504c.217.208.558.418 1.02.605c.923.372 2.231.614 3.702.614c1.47 0 2.78-.242 3.702-.614c.462-.187.803-.397 1.02-.605c.216-.206.278-.376.278-.503V5.667a.5.5 0 0 1 1 0v3.11c0 .488-.246.902-.587 1.227s-.804.594-1.337.809c-1.068.431-2.51.687-4.076.687c-1.567 0-3.008-.256-4.076-.687c-.533-.216-.998-.484-1.337-.809C1.247 9.68 1 9.264 1 8.778V5.667a.5.5 0 0 1 .5-.5"/><path d="M3.7 10.5V7.113h1V10.5zm4.4 0v-3h1v3z"/></g></svg></span><span class="des-t">Utile</span><span class="fetta-pc">10 %</span></div><p class="des-q" style="font-style:normal;margin:0;">Il guadagno della pasticceria.</p></div></div></div><div class="shelfc" style="--ch:#9AC3AB;--cp:#5C8B73;--et:#3f6b52;--tn:#eef5f0"><div class="shelfeti">Da ricordare</div><p>Si calcola solo la prima fetta, la <strong>materia prima</strong>. Le altre tre si ricavano da lei con una proporzione, perché il costo della materia prima corrisponde al 30 % del prezzo.</p></div></section><section data-screen-label="Card 03" class="card" style="border-top:3px solid #5A82AB;"><div class="wm" style="color:rgba(90,130,171,.30);">03</div><div class="kicker" style="background:rgba(155,188,221,.22);color:#3a5f85;">Il video tutorial</div><h2>La prova svolta passo passo.</h2><p class="t">Nel video la parte di economia della prova è svolta tutta, passo passo, sul <strong>plum cake</strong> di una prova di qualifica degli anni scorsi: il testo, il listino, il costo di ogni ingrediente, le quattro fette del prezzo e l'IVA. Si può fermare quando si vuole e rifare i conti con la calcolatrice.</p><div style="position:relative;margin:24px 0 0;"><button type="button" class="ria-anteprima" aria-label="Guarda il video tutorial" onclick="var v=document.getElementById('video-tutorial');this.style.display='none';v.style.display='block';var p=v.play();if(p&&p.catch)p.catch(function(){});"><img data-lente="no" loading="lazy" decoding="async" src="assets/tutorial-costo-del-dolce-copertina.jpg" alt="Il titolo del video: il costo del dolce e il prezzo di vendita" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:7px;"><span style="position:absolute;inset:0;border-radius:7px;background:linear-gradient(180deg,rgba(38,36,32,0) 76%,rgba(38,36,32,.58) 100%);"></span><span class="ria-play" style="position:absolute;top:50%;left:50%;width:clamp(54px,8vw,80px);height:clamp(54px,8vw,80px);transform:translate(-50%,-50%);border-radius:50%;background:rgba(38,36,32,.74);border:1.5px solid rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;"><svg aria-hidden="true" viewBox="0 0 24 24" style="width:40%;height:40%;margin-left:9%;display:block;"><path d="M7 4.8 L19 12 L7 19.2 Z" fill="#fff" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span style="position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:clamp(8px,1.4vw,14px);padding:clamp(8px,1.4vw,14px) clamp(10px,1.8vw,18px);color:#fff;"><svg aria-hidden="true" viewBox="0 0 24 24" style="width:clamp(12px,1.5vw,16px);height:auto;display:block;flex-shrink:0;"><path d="M7 4.8 L19 12 L7 19.2 Z" fill="#fff" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg><span style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.38);"></span><span style="font-family:'Schibsted Grotesk',sans-serif;font-size:clamp(11px,1.2vw,13px);font-weight:600;letter-spacing:.02em;font-variant-numeric:tabular-nums;">8:56</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:clamp(14px,1.6vw,18px);height:auto;display:block;flex-shrink:0;"><path d="M11 5 L6 9 H3 V15 H6 L11 19 Z"/><path d="M15.5 8.5 a5 5 0 0 1 0 7"/></svg><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:clamp(14px,1.6vw,18px);height:auto;display:block;flex-shrink:0;"><path d="M4 9 V4 H9 M15 4 H20 V9 M20 15 V20 H15 M9 20 H4 V15"/></svg></span></button><video id="video-tutorial" src="assets/tutorial-costo-del-dolce.mp4" controls="controls" preload="none" playsinline="playsinline"></video></div></section><section data-screen-label="Card 04" class="card" style="border-top:3px solid #C07F49;"><div class="wm" style="color:rgba(192,127,73,.30);">04</div><div class="kicker" style="background:rgba(240,183,131,.22);color:#8a5320;">Il metodo</div><h2>I sette passi.</h2><p class="t">La scaletta della prova è sempre la stessa, qualunque dolce capiti. Diventa sette passi.</p><div class="passi"><div class="passo" style="--ch:#9AC3AB;--cp:#5C8B73;--et:#3f6b52;--tn:#eef5f0"><div class="passo-n">1</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">Il costo di ogni ingrediente</div><p>Per ogni ingrediente si cerca il prezzo nel listino e si imposta la proporzione <span class="fx">prezzo al kg : 1000 = x : grammi</span>. Per le uova, che si comprano a dozzina, <span class="fx">prezzo della dozzina : 12 = x : numero di uova</span>. Ogni risultato si arrotonda al centesimo: se la terza cifra dopo la virgola è 5 o più, la seconda sale di uno.</p></div></div><div class="passo" style="--ch:#9BBCDD;--cp:#5A82AB;--et:#3a5f85;--tn:#eef3f9"><div class="passo-n">2</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">Il costo della materia prima</div><p>Si sommano i costi di tutti gli ingredienti. Il totale è la prima fetta della torta, il 30 % del prezzo.</p></div></div><div class="passo" style="--ch:#F0B783;--cp:#C07F49;--et:#8a5320;--tn:#fbf1e7"><div class="passo-n">3</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">I costi fissi</div><p><span class="fx">30 : materia prima = 35 : x</span>, cioè x = (materia prima · 35) / 30.</p></div></div><div class="passo" style="--ch:#E7A2B3;--cp:#B6677B;--et:#93455a;--tn:#fbeff2"><div class="passo-n">4</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">I costi variabili</div><p><span class="fx">30 : materia prima = 25 : x</span>, cioè x = (materia prima · 25) / 30.</p></div></div><div class="passo" style="--ch:#EBC871;--cp:#BB963C;--et:#7a611f;--tn:#faf4e2"><div class="passo-n">5</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">L'utile</div><p><span class="fx">30 : materia prima = 10 : x</span>, cioè x = (materia prima · 10) / 30.</p></div></div><div class="passo" style="--ch:#B9A6D9;--cp:#7B66A4;--et:#5a4a72;--tn:#f3f0f8"><div class="passo-n">6</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">Il prezzo di vendita senza IVA</div><p>Si sommano materia prima, costi fissi, costi variabili e utile.</p></div></div><div class="passo" style="--ch:#8AC5C1;--cp:#4E918C;--et:#2f635f;--tn:#edf5f4"><div class="passo-n">7</div><div class="passo-c"><div class="passo-l"></div><div class="passo-t">L'IVA e il prezzo con IVA</div><p>L'IVA è il 10 % del prezzo senza IVA: <span class="fx">(prezzo senza IVA · 10) / 100</span>. Il prezzo di vendita con IVA è la somma del prezzo senza IVA e dell'IVA. È il prezzo di tutto il dolce, per 10 persone.</p></div></div></div><div class="shelfc" style="--ch:#EBC871;--cp:#BB963C;--et:#7a611f;--tn:#faf4e2"><div class="shelfeti"><svg aria-hidden="true" width="15" height="14" viewBox="0 0 20 18"><path d="M10 1.6 L18.6 16.4 H1.4 Z" fill="none" stroke="#BB963C" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 7 V11" stroke="#BB963C" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="13.6" r="1.1" fill="#BB963C"/></svg>Attenzione</div><p>Di solito nelle prove le uova sono intere, e basta contarle. Se invece sono scritte in grammi, è un caso in più: un albume pesa 30 g e un tuorlo 20 g, quindi 90 g di albume e 60 g di tuorlo sono 3 uova, non 6.</p></div></section><section data-screen-label="Card 05" class="card" style="border-top:3px solid #B6677B;"><div class="wm" style="color:rgba(182,103,123,.30);">05</div><div class="kicker" style="background:rgba(231,162,179,.22);color:#93455a;">Prima di consegnare</div><h2>Gli errori da evitare.</h2><p class="t">Prima di consegnare si controllano gli errori più comuni.</p><ul class="lista errori" style="--ch:#E7A2B3;--cp:#B6677B;--et:#93455a;--tn:#fbeff2"><li><b>Un ingrediente dimenticato.</b> Si controlla che ogni ingrediente della ricetta abbia il suo calcolo.</li><li><b>Il prezzo preso dalla riga sbagliata del listino.</b> Zucchero di canna e zucchero semolato, bacca di vaniglia e vanillina, farina debole e farina forte hanno prezzi diversi.</li><li><b>I grammi divisi per 100 invece che per 1000.</b> Il prezzo del listino è al chilo, e un chilo è 1000 grammi.</li><li><b>Le uova contate due volte.</b> Albumi e tuorli vengono dalle stesse uova.</li><li><b>I calcoli non scritti.</b> Si valuta anche la correttezza dei passaggi, non solo il risultato.</li></ul><div style="text-align:center;margin-top:30px;"><button class="vai-ese" onclick="goTab('ese')"><svg style="transform:rotate(-90deg)" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20"><g fill="#fff" fill-rule="evenodd" clip-rule="evenodd"><path d="M14.384 11.347a.5.5 0 0 1-.064.704l-4 3.333a.5.5 0 0 1-.64-.768l4-3.333a.5.5 0 0 1 .704.064"/><path d="M5.616 11.347a.5.5 0 0 1 .704-.064l4 3.333a.5.5 0 0 1-.64.768l-4-3.333a.5.5 0 0 1-.064-.704"/><path d="M10 15a.5.5 0 0 1-.5-.5V5a.5.5 0 0 1 1 0v9.5a.5.5 0 0 1-.5.5"/></g></svg>Vai agli esercizi</button></div></section></div><div class="tabpanel" id="p-ese"><div style="text-align:center;max-width:760px;margin:6px auto 36px;"><h1 style="font-family:'Fraunces',serif;font-weight:600;font-size:44px;line-height:1.05;letter-spacing:-1.4px;margin:0;color:#57534a;">Gli esercizi.</h1><div style="width:70px;height:4px;border-radius:4px;background:#E65900;margin:20px auto 0;"></div><p style="font-size:17px;line-height:1.6;color:#827F75;margin:16px auto 0;max-width:660px;">Cinque dolci, dal più semplice a due prove vere. Per ogni dolce si cercano i prezzi nel listino, si fanno i conti sul quaderno seguendo i sette passi, si scrive il prezzo con IVA nella casella e si controlla. Poi si apre la soluzione.</p></div><div class="es" id="es1" style="--ch:#DD977A;--cp:#AC6144;--et:#8a4a30;--tn:#f9efea" data-giusto="10,56"><div class="es-h"><span class="es-n">1</span><div><div class="es-k">Esercizio 1</div><div class="es-t">Torta panna e vaniglia</div></div></div><p class="es-c">Ingredienti per 10 persone. Calcola il costo della materia prima e il prezzo di vendita con IVA (30 % materia prima, 35 % costi fissi, 25 % costi variabili, 10 % utile, IVA 10 %). I prezzi sono nel listino.</p><table class="ricetta"><thead><tr><th>Ingredienti</th><th class="g">Grammature</th></tr></thead><tbody><tr><td>Farina di frumento tipo 00</td><td class="g">200 g</td></tr><tr><td>Burro</td><td class="g">200 g</td></tr><tr><td>Zucchero</td><td class="g">180 g</td></tr><tr><td>Uova</td><td class="g">4 pz</td></tr><tr><td>Panna</td><td class="g">90 g</td></tr><tr><td>Cacao</td><td class="g">5 g</td></tr><tr><td>Lievito chimico (baking)</td><td class="g">4 g</td></tr><tr><td>Bacca di vaniglia</td><td class="g">0,4 g</td></tr></tbody></table><div class="prova-r"><label for="r1">Il tuo prezzo con IVA</label><span class="campo"><input id="r1" inputmode="decimal" autocomplete="off" placeholder="0,00"><span>€</span></span><button type="button" class="controlla" onclick="controlla(1)">Controlla</button><span class="esito" id="e1" aria-live="polite"></span></div><button type="button" class="apri-sol" aria-expanded="false" onclick="soluzione(1, this)">Mostra la soluzione</button><div class="sol" id="s1" hidden><div class="sol-t">Il costo di ogni ingrediente</div><div class="sol-scorri"><table class="soltab"><tbody><tr><td>Farina debole</td><td class="fx">0,85 : 1000 = x : 200</td><td class="fx">x = (0,85 · 200) / 1000 = <b>0,17 €</b></td></tr><tr><td>Burro</td><td class="fx">4,40 : 1000 = x : 200</td><td class="fx">x = (4,40 · 200) / 1000 = <b>0,88 €</b></td></tr><tr><td>Zucchero semolato</td><td class="fx">1,00 : 1000 = x : 180</td><td class="fx">x = (1,00 · 180) / 1000 = <b>0,18 €</b></td></tr><tr><td>Uova</td><td class="fx">1,46 : 12 = x : 4</td><td class="fx">x = (1,46 · 4) / 12 = <b>0,49 €</b></td></tr><tr><td>Panna</td><td class="fx">5,66 : 1000 = x : 90</td><td class="fx">x = (5,66 · 90) / 1000 = <b>0,51 €</b></td></tr><tr><td>Cacao</td><td class="fx">8,00 : 1000 = x : 5</td><td class="fx">x = (8,00 · 5) / 1000 = <b>0,04 €</b></td></tr><tr><td>Baking</td><td class="fx">3,42 : 1000 = x : 4</td><td class="fx">x = (3,42 · 4) / 1000 = <b>0,01 €</b></td></tr><tr><td>Bacca di vaniglia</td><td class="fx">1.500 : 1000 = x : 0,4</td><td class="fx">x = (1.500 · 0,4) / 1000 = <b>0,60 €</b></td></tr></tbody></table></div><div class="sol-box"><p><span class="lab">Materia prima</span> 0,17 + 0,88 + 0,18 + 0,49 + 0,51 + 0,04 + 0,01 + 0,60 = <b>2,88 €</b></p><p><span class="lab">Costi fissi</span> <span class="fx">30 : 2,88 = 35 : x</span><span class="stacco"></span>x = (2,88 · 35) / 30 = <b>3,36 €</b></p><p><span class="lab">Costi variabili</span> <span class="fx">30 : 2,88 = 25 : x</span><span class="stacco"></span>x = (2,88 · 25) / 30 = <b>2,40 €</b></p><p><span class="lab">Utile</span> <span class="fx">30 : 2,88 = 10 : x</span><span class="stacco"></span>x = (2,88 · 10) / 30 = <b>0,96 €</b></p></div><div class="sol-fine"><p><span class="lab">Prezzo senza IVA</span> 2,88 + 3,36 + 2,40 + 0,96 = <b>9,60 €</b></p><p><span class="lab">IVA 10 %</span> (9,60 · 10) / 100 = <b>0,96 €</b></p><p class="finale"><span class="lab">Prezzo con IVA</span> 9,60 + 0,96 = <b>10,56 €</b></p></div></div></div><div class="es" id="es2" style="--ch:#9AC3AB;--cp:#5C8B73;--et:#3f6b52;--tn:#eef5f0" data-giusto="6,52"><div class="es-h"><span class="es-n">2</span><div><div class="es-k">Esercizio 2</div><div class="es-t">Torta morbida alla confettura</div></div></div><p class="es-c">Ingredienti per 10 persone. Calcola il costo della materia prima e il prezzo di vendita con IVA (30 % materia prima, 35 % costi fissi, 25 % costi variabili, 10 % utile, IVA 10 %). I prezzi sono nel listino.</p><table class="ricetta"><thead><tr><th>Ingredienti</th><th class="g">Grammature</th></tr></thead><tbody><tr><td>Farina di frumento tipo 00</td><td class="g">140 g</td></tr><tr><td>Burro</td><td class="g">200 g</td></tr><tr><td>Zucchero di canna</td><td class="g">120 g</td></tr><tr><td>Uova</td><td class="g">3 pz</td></tr><tr><td>Lievito chimico (baking)</td><td class="g">3 g</td></tr><tr><td>Confettura</td><td class="g">120 g</td></tr></tbody></table><div class="prova-r"><label for="r2">Il tuo prezzo con IVA</label><span class="campo"><input id="r2" inputmode="decimal" autocomplete="off" placeholder="0,00"><span>€</span></span><button type="button" class="controlla" onclick="controlla(2)">Controlla</button><span class="esito" id="e2" aria-live="polite"></span></div><button type="button" class="apri-sol" aria-expanded="false" onclick="soluzione(2, this)">Mostra la soluzione</button><div class="sol" id="s2" hidden><div class="sol-t">Il costo di ogni ingrediente</div><div class="sol-scorri"><table class="soltab"><tbody><tr><td>Farina debole</td><td class="fx">0,85 : 1000 = x : 140</td><td class="fx">x = (0,85 · 140) / 1000 = <b>0,12 €</b></td></tr><tr><td>Burro</td><td class="fx">4,40 : 1000 = x : 200</td><td class="fx">x = (4,40 · 200) / 1000 = <b>0,88 €</b></td></tr><tr><td>Zucchero di canna</td><td class="fx">1,50 : 1000 = x : 120</td><td class="fx">x = (1,50 · 120) / 1000 = <b>0,18 €</b></td></tr><tr><td>Uova</td><td class="fx">1,46 : 12 = x : 3</td><td class="fx">x = (1,46 · 3) / 12 = <b>0,37 €</b></td></tr><tr><td>Baking</td><td class="fx">3,42 : 1000 = x : 3</td><td class="fx">x = (3,42 · 3) / 1000 = <b>0,01 €</b></td></tr><tr><td>Confettura</td><td class="fx">1,87 : 1000 = x : 120</td><td class="fx">x = (1,87 · 120) / 1000 = <b>0,22 €</b></td></tr></tbody></table></div><div class="sol-box"><p><span class="lab">Materia prima</span> 0,12 + 0,88 + 0,18 + 0,37 + 0,01 + 0,22 = <b>1,78 €</b></p><p><span class="lab">Costi fissi</span> <span class="fx">30 : 1,78 = 35 : x</span><span class="stacco"></span>x = (1,78 · 35) / 30 = <b>2,08 €</b></p><p><span class="lab">Costi variabili</span> <span class="fx">30 : 1,78 = 25 : x</span><span class="stacco"></span>x = (1,78 · 25) / 30 = <b>1,48 €</b></p><p><span class="lab">Utile</span> <span class="fx">30 : 1,78 = 10 : x</span><span class="stacco"></span>x = (1,78 · 10) / 30 = <b>0,59 €</b></p></div><div class="sol-fine"><p><span class="lab">Prezzo senza IVA</span> 1,78 + 2,08 + 1,48 + 0,59 = <b>5,93 €</b></p><p><span class="lab">IVA 10 %</span> (5,93 · 10) / 100 = <b>0,59 €</b></p><p class="finale"><span class="lab">Prezzo con IVA</span> 5,93 + 0,59 = <b>6,52 €</b></p></div></div></div><div class="es" id="es3" style="--ch:#9BBCDD;--cp:#5A82AB;--et:#3a5f85;--tn:#eef3f9" data-giusto="10,02"><div class="es-h"><span class="es-n">3</span><div><div class="es-k">Esercizio 3</div><div class="es-t">Sbrisolona al cacao</div></div></div><p class="es-c">Ingredienti per 10 persone. Calcola il costo della materia prima e il prezzo di vendita con IVA (30 % materia prima, 35 % costi fissi, 25 % costi variabili, 10 % utile, IVA 10 %). I prezzi sono nel listino.</p><table class="ricetta"><thead><tr><th>Ingredienti</th><th class="g">Grammature</th></tr></thead><tbody><tr><td>Burro</td><td class="g">180 g</td></tr><tr><td>Farina debole</td><td class="g">210 g</td></tr><tr><td>Uova</td><td class="g">4 pz</td></tr><tr><td>Farina di mais</td><td class="g">40 g</td></tr><tr><td>Baking (lievito chimico)</td><td class="g">6 g</td></tr><tr><td>Mandorle</td><td class="g">120 g</td></tr><tr><td>Zucchero semolato</td><td class="g">230 g</td></tr><tr><td>Cacao</td><td class="g">10 g</td></tr></tbody></table><div class="prova-r"><label for="r3">Il tuo prezzo con IVA</label><span class="campo"><input id="r3" inputmode="decimal" autocomplete="off" placeholder="0,00"><span>€</span></span><button type="button" class="controlla" onclick="controlla(3)">Controlla</button><span class="esito" id="e3" aria-live="polite"></span></div><button type="button" class="apri-sol" aria-expanded="false" onclick="soluzione(3, this)">Mostra la soluzione</button><div class="sol" id="s3" hidden><div class="sol-t">Il costo di ogni ingrediente</div><div class="sol-scorri"><table class="soltab"><tbody><tr><td>Burro</td><td class="fx">4,40 : 1000 = x : 180</td><td class="fx">x = (4,40 · 180) / 1000 = <b>0,79 €</b></td></tr><tr><td>Farina debole</td><td class="fx">0,85 : 1000 = x : 210</td><td class="fx">x = (0,85 · 210) / 1000 = <b>0,18 €</b></td></tr><tr><td>Uova</td><td class="fx">1,46 : 12 = x : 4</td><td class="fx">x = (1,46 · 4) / 12 = <b>0,49 €</b></td></tr><tr><td>Farina di mais</td><td class="fx">0,90 : 1000 = x : 40</td><td class="fx">x = (0,90 · 40) / 1000 = <b>0,04 €</b></td></tr><tr><td>Baking</td><td class="fx">3,42 : 1000 = x : 6</td><td class="fx">x = (3,42 · 6) / 1000 = <b>0,02 €</b></td></tr><tr><td>Mandorle</td><td class="fx">7,50 : 1000 = x : 120</td><td class="fx">x = (7,50 · 120) / 1000 = <b>0,90 €</b></td></tr><tr><td>Zucchero semolato</td><td class="fx">1,00 : 1000 = x : 230</td><td class="fx">x = (1,00 · 230) / 1000 = <b>0,23 €</b></td></tr><tr><td>Cacao</td><td class="fx">8,00 : 1000 = x : 10</td><td class="fx">x = (8,00 · 10) / 1000 = <b>0,08 €</b></td></tr></tbody></table></div><div class="sol-box"><p><span class="lab">Materia prima</span> 0,79 + 0,18 + 0,49 + 0,04 + 0,02 + 0,90 + 0,23 + 0,08 = <b>2,73 €</b></p><p><span class="lab">Costi fissi</span> <span class="fx">30 : 2,73 = 35 : x</span><span class="stacco"></span>x = (2,73 · 35) / 30 = <b>3,19 €</b></p><p><span class="lab">Costi variabili</span> <span class="fx">30 : 2,73 = 25 : x</span><span class="stacco"></span>x = (2,73 · 25) / 30 = <b>2,28 €</b></p><p><span class="lab">Utile</span> <span class="fx">30 : 2,73 = 10 : x</span><span class="stacco"></span>x = (2,73 · 10) / 30 = <b>0,91 €</b></p></div><div class="sol-fine"><p><span class="lab">Prezzo senza IVA</span> 2,73 + 3,19 + 2,28 + 0,91 = <b>9,11 €</b></p><p><span class="lab">IVA 10 %</span> (9,11 · 10) / 100 = <b>0,91 €</b></p><p class="finale"><span class="lab">Prezzo con IVA</span> 9,11 + 0,91 = <b>10,02 €</b></p></div></div></div><div class="es" id="es4" style="--ch:#F0B783;--cp:#C07F49;--et:#8a5320;--tn:#fbf1e7" data-giusto="7,26"><div class="es-h"><span class="es-n">4</span><div><div class="es-k">Esercizio 4</div><div class="es-t">Plum cake</div></div></div><p class="es-c">Ingredienti per 10 persone. Calcola il costo della materia prima e il prezzo di vendita con IVA (30 % materia prima, 35 % costi fissi, 25 % costi variabili, 10 % utile, IVA 10 %). I prezzi sono nel listino.</p><p class="es-nota">Ricetta della prova di qualifica del 2024. Qui le uova sono in grammi: un albume pesa 30 g e un tuorlo 20 g, quindi 90 g di albume e 60 g di tuorlo sono 3 uova, non 6.</p><table class="ricetta"><thead><tr><th>Ingredienti</th><th class="g">Grammature</th></tr></thead><tbody><tr><td>Burro</td><td class="g">125 g</td></tr><tr><td>Farina di frumento tipo 00, W 150-160</td><td class="g">125 g</td></tr><tr><td>Zucchero di canna</td><td class="g">125 g</td></tr><tr><td>Albume d&#x27;uovo</td><td class="g">90 g</td></tr><tr><td>Tuorlo d&#x27;uovo</td><td class="g">60 g</td></tr><tr><td>Lievito chimico (baking)</td><td class="g">2 g</td></tr><tr><td>Sale fino</td><td class="g">0,5 g</td></tr><tr><td>Bacca di vaniglia</td><td class="g">0,5 g</td></tr></tbody></table><div class="prova-r"><label for="r4">Il tuo prezzo con IVA</label><span class="campo"><input id="r4" inputmode="decimal" autocomplete="off" placeholder="0,00"><span>€</span></span><button type="button" class="controlla" onclick="controlla(4)">Controlla</button><span class="esito" id="e4" aria-live="polite"></span></div><button type="button" class="apri-sol" aria-expanded="false" onclick="soluzione(4, this)">Mostra la soluzione</button><div class="sol" id="s4" hidden><div class="sol-t">Il costo di ogni ingrediente</div><div class="sol-scorri"><table class="soltab"><tbody><tr><td>Burro</td><td class="fx">4,40 : 1000 = x : 125</td><td class="fx">x = (4,40 · 125) / 1000 = <b>0,55 €</b></td></tr><tr><td>Farina debole</td><td class="fx">0,85 : 1000 = x : 125</td><td class="fx">x = (0,85 · 125) / 1000 = <b>0,11 €</b></td></tr><tr><td>Zucchero di canna</td><td class="fx">1,50 : 1000 = x : 125</td><td class="fx">x = (1,50 · 125) / 1000 = <b>0,19 €</b></td></tr><tr><td>Uova</td><td class="fx">1,46 : 12 = x : 3</td><td class="fx">x = (1,46 · 3) / 12 = <b>0,37 €</b></td></tr><tr><td>Baking</td><td class="fx">3,42 : 1000 = x : 2</td><td class="fx">x = (3,42 · 2) / 1000 = <b>0,01 €</b></td></tr><tr><td>Sale</td><td class="fx">0,20 : 1000 = x : 0,5</td><td class="fx">x = (0,20 · 0,5) / 1000 = <b>0,00 €</b></td></tr><tr><td>Bacca di vaniglia</td><td class="fx">1.500 : 1000 = x : 0,5</td><td class="fx">x = (1.500 · 0,5) / 1000 = <b>0,75 €</b></td></tr></tbody></table></div><div class="sol-box"><p><span class="lab">Materia prima</span> 0,55 + 0,11 + 0,19 + 0,37 + 0,01 + 0,00 + 0,75 = <b>1,98 €</b></p><p><span class="lab">Costi fissi</span> <span class="fx">30 : 1,98 = 35 : x</span><span class="stacco"></span>x = (1,98 · 35) / 30 = <b>2,31 €</b></p><p><span class="lab">Costi variabili</span> <span class="fx">30 : 1,98 = 25 : x</span><span class="stacco"></span>x = (1,98 · 25) / 30 = <b>1,65 €</b></p><p><span class="lab">Utile</span> <span class="fx">30 : 1,98 = 10 : x</span><span class="stacco"></span>x = (1,98 · 10) / 30 = <b>0,66 €</b></p></div><div class="sol-fine"><p><span class="lab">Prezzo senza IVA</span> 1,98 + 2,31 + 1,65 + 0,66 = <b>6,60 €</b></p><p><span class="lab">IVA 10 %</span> (6,60 · 10) / 100 = <b>0,66 €</b></p><p class="finale"><span class="lab">Prezzo con IVA</span> 6,60 + 0,66 = <b>7,26 €</b></p></div></div></div><div class="es" id="es5" style="--ch:#E7A2B3;--cp:#B6677B;--et:#93455a;--tn:#fbeff2" data-giusto="11,88"><div class="es-h"><span class="es-n">5</span><div><div class="es-k">Esercizio 5</div><div class="es-t">Torta di nocciole</div></div></div><p class="es-c">Ingredienti per 10 persone. Calcola il costo della materia prima e il prezzo di vendita con IVA (30 % materia prima, 35 % costi fissi, 25 % costi variabili, 10 % utile, IVA 10 %). I prezzi sono nel listino.</p><p class="es-nota">Prova della Regione Piemonte (anno formativo 2022/2023). Per una torta la farina è quella debole; il fumetto è farina di mais finissima.</p><table class="ricetta"><thead><tr><th>Ingredienti</th><th class="g">Grammature</th></tr></thead><tbody><tr><td>Burro</td><td class="g">230 g</td></tr><tr><td>Farina</td><td class="g">200 g</td></tr><tr><td>Uova</td><td class="g">5 pz</td></tr><tr><td>Fumetto (farina di mais)</td><td class="g">50 g</td></tr><tr><td>Baking (lievito chimico)</td><td class="g">5 g</td></tr><tr><td>Nocciole</td><td class="g">150 g</td></tr><tr><td>Zucchero</td><td class="g">250 g</td></tr><tr><td>Cacao</td><td class="g">5 g</td></tr></tbody></table><div class="prova-r"><label for="r5">Il tuo prezzo con IVA</label><span class="campo"><input id="r5" inputmode="decimal" autocomplete="off" placeholder="0,00"><span>€</span></span><button type="button" class="controlla" onclick="controlla(5)">Controlla</button><span class="esito" id="e5" aria-live="polite"></span></div><button type="button" class="apri-sol" aria-expanded="false" onclick="soluzione(5, this)">Mostra la soluzione</button><div class="sol" id="s5" hidden><div class="sol-t">Il costo di ogni ingrediente</div><div class="sol-scorri"><table class="soltab"><tbody><tr><td>Burro</td><td class="fx">4,40 : 1000 = x : 230</td><td class="fx">x = (4,40 · 230) / 1000 = <b>1,01 €</b></td></tr><tr><td>Farina debole</td><td class="fx">0,85 : 1000 = x : 200</td><td class="fx">x = (0,85 · 200) / 1000 = <b>0,17 €</b></td></tr><tr><td>Uova</td><td class="fx">1,46 : 12 = x : 5</td><td class="fx">x = (1,46 · 5) / 12 = <b>0,61 €</b></td></tr><tr><td>Fumetto</td><td class="fx">1,10 : 1000 = x : 50</td><td class="fx">x = (1,10 · 50) / 1000 = <b>0,06 €</b></td></tr><tr><td>Baking</td><td class="fx">3,42 : 1000 = x : 5</td><td class="fx">x = (3,42 · 5) / 1000 = <b>0,02 €</b></td></tr><tr><td>Nocciole</td><td class="fx">7,20 : 1000 = x : 150</td><td class="fx">x = (7,20 · 150) / 1000 = <b>1,08 €</b></td></tr><tr><td>Zucchero semolato</td><td class="fx">1,00 : 1000 = x : 250</td><td class="fx">x = (1,00 · 250) / 1000 = <b>0,25 €</b></td></tr><tr><td>Cacao</td><td class="fx">8,00 : 1000 = x : 5</td><td class="fx">x = (8,00 · 5) / 1000 = <b>0,04 €</b></td></tr></tbody></table></div><div class="sol-box"><p><span class="lab">Materia prima</span> 1,01 + 0,17 + 0,61 + 0,06 + 0,02 + 1,08 + 0,25 + 0,04 = <b>3,24 €</b></p><p><span class="lab">Costi fissi</span> <span class="fx">30 : 3,24 = 35 : x</span><span class="stacco"></span>x = (3,24 · 35) / 30 = <b>3,78 €</b></p><p><span class="lab">Costi variabili</span> <span class="fx">30 : 3,24 = 25 : x</span><span class="stacco"></span>x = (3,24 · 25) / 30 = <b>2,70 €</b></p><p><span class="lab">Utile</span> <span class="fx">30 : 3,24 = 10 : x</span><span class="stacco"></span>x = (3,24 · 10) / 30 = <b>1,08 €</b></p></div><div class="sol-fine"><p><span class="lab">Prezzo senza IVA</span> 3,24 + 3,78 + 2,70 + 1,08 = <b>10,80 €</b></p><p><span class="lab">IVA 10 %</span> (10,80 · 10) / 100 = <b>1,08 €</b></p><p class="finale"><span class="lab">Prezzo con IVA</span> 10,80 + 1,08 = <b>11,88 €</b></p></div></div></div></div><div class="tabpanel" id="p-mat"><section class="card" style="border-top:3px solid #BB963C;padding-bottom:44px;"><div class="kicker" style="background:rgba(235,200,113,.22);color:#7a611f;">Il listino</div><h2>Il listino prezzi.</h2><p class="t">È il listino usato negli esercizi e nel video. Alla prova ne viene dato uno simile, <strong class="hl">a parte</strong>, insieme al testo: tutti i prezzi che servono sono lì. I prezzi sono in euro al chilo, tranne le uova, che si comprano a dozzina.</p><div class="cerca"><input id="cerca" type="search" placeholder="Cerca un ingrediente" autocomplete="off" oninput="filtra(this.value)"></div><div class="listini sfonda"><table class="listino"><thead><tr><th>Materia prima</th><th class="g">€ al kg</th></tr></thead><tbody><tr data-n="acciughe"><td>Acciughe</td><td class="g">11,30</td></tr><tr data-n="alcolati (rum)"><td>Alcolati (rum)</td><td class="g">15,15</td></tr><tr data-n="arancio candito"><td>Arancio candito</td><td class="g">3,74</td></tr><tr data-n="armelline"><td>Armelline</td><td class="g">5,63</td></tr><tr data-n="bacca di vaniglia"><td>Bacca di vaniglia</td><td class="g">1.500,00</td></tr><tr data-n="baking"><td>Baking</td><td class="g">3,42</td></tr><tr data-n="burro"><td>Burro</td><td class="g">4,40</td></tr><tr data-n="cacao"><td>Cacao</td><td class="g">8,00</td></tr><tr data-n="carote"><td>Carote</td><td class="g">2,00</td></tr><tr data-n="cioccolato bianco"><td>Cioccolato bianco</td><td class="g">9,58</td></tr><tr data-n="cioccolato fondente"><td>Cioccolato fondente</td><td class="g">6,20</td></tr><tr data-n="cioccolato latte"><td>Cioccolato latte</td><td class="g">7,05</td></tr><tr data-n="cocco disidratato"><td>Cocco disidratato</td><td class="g">3,55</td></tr><tr data-n="colla di pesce"><td>Colla di pesce</td><td class="g">26,65</td></tr><tr data-n="confettura"><td>Confettura</td><td class="g">1,87</td></tr><tr data-n="farina debole"><td>Farina debole</td><td class="g">0,85</td></tr><tr data-n="farina di castagne"><td>Farina di castagne</td><td class="g">4,23</td></tr><tr data-n="farina di mais"><td>Farina di mais</td><td class="g">0,90</td></tr><tr data-n="farina di mandorle"><td>Farina di mandorle</td><td class="g">9,60</td></tr><tr data-n="farina forte"><td>Farina forte</td><td class="g">0,66</td></tr><tr data-n="fecola di patate"><td>Fecola di patate</td><td class="g">1,80</td></tr><tr data-n="formaggio edamer"><td>Formaggio Edamer</td><td class="g">3,80</td></tr><tr data-n="frutta candita"><td>Frutta candita</td><td class="g">7,00</td></tr></tbody></table><table class="listino"><thead><tr><th>Materia prima</th><th class="g">€ al kg</th></tr></thead><tbody><tr data-n="fumetto"><td>Fumetto</td><td class="g">1,10</td></tr><tr data-n="gelatina di frutta"><td>Gelatina di frutta</td><td class="g">5,02</td></tr><tr data-n="latte"><td>Latte</td><td class="g">1,06</td></tr><tr data-n="lievito di birra"><td>Lievito di birra</td><td class="g">6,06</td></tr><tr data-n="mandorle"><td>Mandorle</td><td class="g">7,50</td></tr><tr data-n="margarina frolla/sfoglia"><td>Margarina frolla/sfoglia</td><td class="g">2,40</td></tr><tr data-n="miele"><td>Miele</td><td class="g">7,75</td></tr><tr data-n="nocciole"><td>Nocciole</td><td class="g">7,20</td></tr><tr data-n="olio evo"><td>Olio evo</td><td class="g">3,10</td></tr><tr data-n="olio semi"><td>Olio semi</td><td class="g">1,43</td></tr><tr data-n="olive"><td>Olive</td><td class="g">5,40</td></tr><tr data-n="origano"><td>Origano</td><td class="g">3,80</td></tr><tr data-n="panna"><td>Panna</td><td class="g">5,66</td></tr><tr data-n="pasta di zucchero"><td>Pasta di zucchero</td><td class="g">9,88</td></tr><tr data-n="peperoni agrodolce"><td>Peperoni agrodolce</td><td class="g">4,60</td></tr><tr data-n="pomodori pelati"><td>Pomodori pelati</td><td class="g">3,80</td></tr><tr data-n="sale"><td>Sale</td><td class="g">0,20</td></tr><tr data-n="uova"><td>Uova</td><td class="g">1,46 a dozzina</td></tr><tr data-n="vanillina"><td>Vanillina</td><td class="g">44,00</td></tr><tr data-n="wurstel"><td>Wurstel</td><td class="g">3,20</td></tr><tr data-n="zucchero di canna"><td>Zucchero di canna</td><td class="g">1,50</td></tr><tr data-n="zucchero semolato"><td>Zucchero semolato</td><td class="g">1,00</td></tr><tr data-n="zucchero velo"><td>Zucchero velo</td><td class="g">1,70</td></tr></tbody></table></div><p class="nessuno" id="nessuno" hidden>Nessun ingrediente con questo nome. Prova con un'altra parola (per esempio «farina» o «zucchero»).</p></section><section class="card" style="border-top:3px solid #7B66A4;padding-bottom:44px;"><div class="kicker" style="background:rgba(185,166,217,.22);color:#5a4a72;">I testi</div><h2>I documenti da scaricare.</h2><p class="t">I documenti in Word, da scaricare o da stampare.</p><div class="scarica"><a class="doc" href="assets/testo-prova-plum-cake.docx" download style="--ch:#DD977A;--cp:#AC6144;--et:#8a4a30;--tn:#f9efea"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><g fill="#AC6144"><path d="M6.5 12a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/><path fill-rule="evenodd" d="M11.185 1H4.5A1.5 1.5 0 0 0 3 2.5v15A1.5 1.5 0 0 0 4.5 19h11a1.5 1.5 0 0 0 1.5-1.5V7.202a1.5 1.5 0 0 0-.395-1.014l-4.314-4.702A1.5 1.5 0 0 0 11.185 1M4 2.5a.5.5 0 0 1 .5-.5h6.685a.5.5 0 0 1 .369.162l4.314 4.702a.5.5 0 0 1 .132.338V17.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5z" clip-rule="evenodd"/><path d="M11 7h5.5a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 1 0z"/></g></svg></span><span class="doc-t"><b>Il testo della prova</b><span>La parte di economia, sul plum cake, con gli spazi per i calcoli</span></span><span class="doc-g"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#AC6144" fill-rule="evenodd" clip-rule="evenodd"><path d="M14.384 11.347a.5.5 0 0 1-.064.704l-4 3.333a.5.5 0 0 1-.64-.768l4-3.333a.5.5 0 0 1 .704.064"/><path d="M5.616 11.347a.5.5 0 0 1 .704-.064l4 3.333a.5.5 0 0 1-.64.768l-4-3.333a.5.5 0 0 1-.064-.704"/><path d="M10 15a.5.5 0 0 1-.5-.5V5a.5.5 0 0 1 1 0v9.5a.5.5 0 0 1-.5.5"/></g></svg></span></a><a class="doc" href="assets/listino-prezzi.docx" download style="--ch:#9BBCDD;--cp:#5A82AB;--et:#3a5f85;--tn:#eef3f9"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><g fill="#5A82AB"><path d="M6.5 12a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/><path fill-rule="evenodd" d="M11.185 1H4.5A1.5 1.5 0 0 0 3 2.5v15A1.5 1.5 0 0 0 4.5 19h11a1.5 1.5 0 0 0 1.5-1.5V7.202a1.5 1.5 0 0 0-.395-1.014l-4.314-4.702A1.5 1.5 0 0 0 11.185 1M4 2.5a.5.5 0 0 1 .5-.5h6.685a.5.5 0 0 1 .369.162l4.314 4.702a.5.5 0 0 1 .132.338V17.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5z" clip-rule="evenodd"/><path d="M11 7h5.5a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 1 0z"/></g></svg></span><span class="doc-t"><b>Il listino prezzi</b><span>Lo stesso listino di questa pagina, da stampare</span></span><span class="doc-g"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#5A82AB" fill-rule="evenodd" clip-rule="evenodd"><path d="M14.384 11.347a.5.5 0 0 1-.064.704l-4 3.333a.5.5 0 0 1-.64-.768l4-3.333a.5.5 0 0 1 .704.064"/><path d="M5.616 11.347a.5.5 0 0 1 .704-.064l4 3.333a.5.5 0 0 1-.64.768l-4-3.333a.5.5 0 0 1-.064-.704"/><path d="M10 15a.5.5 0 0 1-.5-.5V5a.5.5 0 0 1 1 0v9.5a.5.5 0 0 1-.5.5"/></g></svg></span></a><a class="doc" href="assets/esercizi-con-soluzioni.docx" download style="--ch:#9AC3AB;--cp:#5C8B73;--et:#3f6b52;--tn:#eef5f0"><span class="med"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20"><g fill="#5C8B73"><path d="M6.5 12a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1zm0 3a.5.5 0 0 1 0-1h7a.5.5 0 0 1 0 1z"/><path fill-rule="evenodd" d="M11.185 1H4.5A1.5 1.5 0 0 0 3 2.5v15A1.5 1.5 0 0 0 4.5 19h11a1.5 1.5 0 0 0 1.5-1.5V7.202a1.5 1.5 0 0 0-.395-1.014l-4.314-4.702A1.5 1.5 0 0 0 11.185 1M4 2.5a.5.5 0 0 1 .5-.5h6.685a.5.5 0 0 1 .369.162l4.314 4.702a.5.5 0 0 1 .132.338V17.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5z" clip-rule="evenodd"/><path d="M11 7h5.5a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 1 0z"/></g></svg></span><span class="doc-t"><b>Gli esercizi con le soluzioni</b><span>I cinque dolci, ognuno con la soluzione completa</span></span><span class="doc-g"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><g fill="#5C8B73" fill-rule="evenodd" clip-rule="evenodd"><path d="M14.384 11.347a.5.5 0 0 1-.064.704l-4 3.333a.5.5 0 0 1-.64-.768l4-3.333a.5.5 0 0 1 .704.064"/><path d="M5.616 11.347a.5.5 0 0 1 .704-.064l4 3.333a.5.5 0 0 1-.64.768l-4-3.333a.5.5 0 0 1-.064-.704"/><path d="M10 15a.5.5 0 0 1-.5-.5V5a.5.5 0 0 1 1 0v9.5a.5.5 0 0 1-.5.5"/></g></svg></span></a></div></section></div></main><footer style="max-width:1180px;margin:0 auto;padding:34px 28px 60px;border-top:1px solid #D9DACF;display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;"><img src="assets/logo-arte-bianca.png" alt="Arte Bianca" style="width:88px;height:auto;display:block;"><div style="text-align:left;"><div style="font-family:'Fraunces',serif;font-weight:600;font-size:25px;letter-spacing:-.4px;color:#57534a;">IISS Cillario Ferrero</div><div style="font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#827F75;margin-top:4px;">DTA · Arte Bianca · Classi terze e quarte</div><div style="font-size:15px;font-weight:600;color:#AC6144;margin-top:6px;">A cura del prof. Mauro Becattini</div></div></footer>
+</div>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  function goTab(name) {
+    document.querySelectorAll('.tabpanel').forEach(p => p.classList.remove('on'));
+    var pan = document.getElementById('p-' + name);
+    if (pan) pan.classList.add('on');
+    document.querySelectorAll('[data-go]').forEach(b => b.classList.toggle('on', b.getAttribute('data-go') === name));
+    var drop = document.getElementById('navdrop');
+    if (drop) drop.style.display = 'none';
+    window.scrollTo({ top: 0 });
+  }
+  function navToggle() {
+    var d = document.getElementById('navdrop');
+    d.style.display = (d.style.display === 'none' || !d.style.display) ? 'block' : 'none';
+  }
+  if (window.lucide) lucide.createIcons();
+</script>
+
+<script>
+function valore(s){ s=(s||'').trim().replace(/€/g,'').replace(/\s/g,''); if(!s) return NaN;
+  if(s.indexOf(',')>=0){ s=s.replace(/\./g,'').replace(',','.'); } return parseFloat(s); }
+function controlla(k){
+  var es=document.getElementById('es'+k), v=valore(document.getElementById('r'+k).value), e=document.getElementById('e'+k);
+  var giusto=valore(es.getAttribute('data-giusto'));
+  e.className='esito';
+  if(isNaN(v)){ e.textContent='Scrivi il prezzo con la virgola, per esempio 7,26.'; e.classList.add('no'); return; }
+  var diff=Math.round(Math.abs(v-giusto)*100);
+  if(diff===0){ e.textContent='Giusto! Ora confronta i passaggi con la soluzione.'; e.classList.add('si'); }
+  else if(diff===1){ e.textContent='Quasi: c\'è un centesimo di differenza. Controlla gli arrotondamenti.'; e.classList.add('quasi'); }
+  else { e.textContent='Non torna: ricontrolla i prezzi del listino e i passaggi.'; e.classList.add('no'); }
+}
+function soluzione(k,b){
+  var s=document.getElementById('s'+k), apri=s.hasAttribute('hidden');
+  if(apri) s.removeAttribute('hidden'); else s.setAttribute('hidden','');
+  b.setAttribute('aria-expanded', apri?'true':'false');
+  b.textContent = apri ? 'Nascondi la soluzione' : 'Mostra la soluzione';
+}
+function filtra(q){
+  q=(q||'').trim().toLowerCase(); var n=0;
+  document.querySelectorAll('table.listino tbody tr').forEach(function(r){
+    var ok=!q || r.getAttribute('data-n').indexOf(q)>=0; r.style.display=ok?'':'none'; if(ok) n++; });
+  document.getElementById('nessuno').hidden = n>0;
+}
+document.addEventListener('keydown',function(ev){
+  if(ev.key==='Enter' && ev.target && ev.target.id && /^r\d+$/.test(ev.target.id)) controlla(+ev.target.id.slice(1));
+});
+</script>
+</body>
+</html>
